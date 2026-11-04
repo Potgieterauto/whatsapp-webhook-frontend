@@ -26,6 +26,11 @@
         .card p.stat { font-size: 28px; font-weight: 700; color: var(--accent-green); }
         .card p.stat-blue { font-size: 28px; font-weight: 700; color: var(--accent-blue); }
         .card p.stat-mono { font-size: 13px; font-family: monospace; color: var(--text-main); word-break: break-all; margin-top: 8px; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .form-input { background: #020617; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-size: 14px; outline: none; }
+        .form-input:focus { border-color: var(--accent-blue); }
+        .action-btn { background: var(--accent-green); color: #020617; font-weight: 600; padding: 9px 12px; border: none; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; }
+        .action-btn:hover { opacity: 0.9; }
         .table-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
         .table-container h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
@@ -54,8 +59,12 @@
             <p class="stat-blue">Active</p>
         </div>
         <div class="card">
-            <h3>Backend API Bridge</h3>
-            <p class="stat-mono" id="backend-url-display">Checking...</p>
+            <h3>Quick Message Client</h3>
+            <div class="form-group">
+                <input type="text" id="client-phone" class="form-input" placeholder="Client Phone (e.g. 2782...)">
+                <input type="text" id="client-msg" class="form-input" placeholder="Message (e.g. Your Omoda C5 is ready)">
+                <button class="action-btn" onclick="sendWhatsAppMessage()">Send WhatsApp</button>
+            </div>
         </div>
     </div>
 
@@ -80,8 +89,8 @@
 
     <script>
         const backendUrl = window.VITE_BACKEND_URL || "https://whatsapp-webhook-fp3x.onrender.com";
-        document.getElementById('backend-url-display').textContent = backendUrl;
 
+        // Fetch live leads on load
         fetch(`${backendUrl}/api/leads`)
             .then(res => res.json())
             .then(data => {
@@ -97,10 +106,4 @@
                         </tr>
                     `).join('');
                 } else {
-                    tbody.innerHTML = `<tr><td colspan="4" class="text-center">No incoming leads logged yet.</td></tr>`;
-                }
-            })
-            .catch(err => {
-                console.error("Failed to load leads:", err);
-                document.getElementById('lead-count').textContent = "0";
-                document.getElementById('leads-table-body').innerHTML = `<tr><td colspan="4" class="text-center" style="color: #f87171;">Connected to backend, but failed to fetch lead records.</td></tr>`;
+                    tbody.innerHTML
