@@ -25,7 +25,6 @@
         .card h3 { font-size: 14px; font-weight: 500; color: var(--text-muted); margin-bottom: 8px; }
         .card p.stat { font-size: 28px; font-weight: 700; color: var(--accent-green); }
         .card p.stat-blue { font-size: 28px; font-weight: 700; color: var(--accent-blue); }
-        .card p.stat-mono { font-size: 13px; font-family: monospace; color: var(--text-main); word-break: break-all; margin-top: 8px; }
         .form-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         .form-input { background: #020617; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-size: 14px; outline: none; }
         .form-input:focus { border-color: var(--accent-blue); }
@@ -63,7 +62,7 @@
             <div class="form-group">
                 <input type="text" id="client-phone" class="form-input" placeholder="Client Phone (e.g. 2782...)">
                 <input type="text" id="client-msg" class="form-input" placeholder="Message (e.g. Your Omoda C5 is ready)">
-                <button class="action-btn" onclick="sendWhatsAppMessage()">Send WhatsApp</button>
+                <button class="action-btn" onclick="window.sendWhatsAppMessage()">Send WhatsApp</button>
             </div>
         </div>
     </div>
@@ -96,7 +95,7 @@
             .then(data => {
                 document.getElementById('lead-count').textContent = data.length || 0;
                 const tbody = document.getElementById('leads-table-body');
-                if (data.length > 0) {
+                if (data && data.length > 0) {
                     tbody.innerHTML = data.map(lead => `
                         <tr>
                             <td style="color: var(--text-muted);">${lead.timestamp || 'Just now'}</td>
@@ -106,4 +105,19 @@
                         </tr>
                     `).join('');
                 } else {
-                    tbody.innerHTML
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center">No incoming leads logged yet.</td></tr>`;
+                }
+            })
+            .catch(err => {
+                console.error("Failed to load leads:", err);
+                document.getElementById('lead-count').textContent = "0";
+                document.getElementById('leads-table-body').innerHTML = `<tr><td colspan="4" class="text-center" style="color: #f87171;">Connected to backend, but failed to fetch lead records.</td></tr>`;
+            });
+
+        // Fully bound global function for button onclick
+        window.sendWhatsAppMessage = function() {
+            const phone = document.getElementById('client-phone').value;
+            const message = document.getElementById('client-msg').value;
+            
+            if (!phone || !message) {
+                alert('Please enter both a phone number and a message
