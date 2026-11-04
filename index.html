@@ -36,4 +36,123 @@
         th { color: var(--text-muted); font-weight: 500; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         td { padding: 12px 0; border-bottom: 1px solid rgba(30, 41, 59, 0.5); }
         .synced-badge { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.2); padding: 4px 8px; border-radius: 6px; font-size: 12px; }
-        .text-center { text-align: center; color: var(--text-muted); padding: 20px 0
+        .text-center { text-align: center; color: var(--text-muted); padding: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">
+            <div class="pulse-dot"></div>
+            <h1>Potgieter Auto | Sales Bot Control Center</h1>
+        </div>
+        <span class="badge">Connected to Render Backend & Meta WhatsApp API</span>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Total Leads Captured</h3>
+            <p class="stat" id="lead-count">Loading...</p>
+        </div>
+        <div class="card">
+            <h3>Active Webhook Status</h3>
+            <p class="stat-blue">Active</p>
+        </div>
+        <div class="card">
+            <h3>Quick Message Client</h3>
+            <div class="form-group">
+                <input type="text" id="client-phone" class="form-input" placeholder="Client Phone (e.g. 2782...)">
+                <input type="text" id="client-msg" class="form-input" placeholder="Message (e.g. Your Omoda C5 is ready)">
+                <button id="send-btn" class="action-btn">Send WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h2>Recent Inquiries & CRM Activity</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Customer Phone</th>
+                    <th>Vehicle Interest</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="leads-table-body">
+                <tr>
+                    <td colspan="4" class="text-center">Fetching live lead data from Render backend...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const backendUrl = window.VITE_BACKEND_URL || "https://whatsapp-webhook-fp3x.onrender.com";
+
+        // Safe fetch for leads
+        fetch(`${backendUrl}/api/leads`)
+            .then(res => res.text())
+            .then(text => {
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    data = [];
+                }
+                
+                document.getElementById('lead-count').textContent = Array.isArray(data) ? data.length : 0;
+                const tbody = document.getElementById('leads-table-body');
+                if (Array.isArray(data) && data.length > 0) {
+                    tbody.innerHTML = data.map(lead => `
+                        <tr>
+                            <td style="color: var(--text-muted);">${lead.timestamp || 'Just now'}</td>
+                            <td style="font-family: monospace; color: var(--accent-green);">${lead.phone}</td>
+                            <td>${lead.vehicle || 'Omoda C5 / Jaecoo J7'}</td>
+                            <td><span class="synced-badge">Synced</span></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center">No lead records logged yet.</td></tr>`;
+                }
+            })
+            .catch(err => {
+                document.getElementById('lead-count').textContent = "0";
+                document.getElementById('leads-table-body').innerHTML = `<tr><td colspan="4" class="text-center" style="color: #f87171;">Failed to connect to backend endpoint.</td></tr>`;
+            });
+
+        // Safe outbound message handler
+        document.getElementById('send-btn').addEventListener('click', function() {
+            const phone = document.getElementById('client-phone').value;
+            const message = document.getElementById('client-msg').value;
+            
+            if (!phone || !message) {
+                alert('Please enter both a phone number and a message.');
+                return;
+            }
+
+            fetch(`${backendUrl}/api/send-message`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, message })
+            })
+            .then(res => res.text())
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data.success) {
+                        alert('WhatsApp message sent successfully!');
+                        document.getElementById('client-msg').value = '';
+                    } else {
+                        alert('Error: ' + JSON.stringify(data.error));
+                    }
+                } catch (e) {
+                    alert('Server response: ' + text);
+                }
+            })
+            .catch(err => {
+                alert('Failed to connect to backend messaging endpoint.');
+            });
+        });
+    </script>
+</body>
+</html>
