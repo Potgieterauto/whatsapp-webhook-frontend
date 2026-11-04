@@ -26,8 +26,8 @@
         .card p.stat { font-size: 28px; font-weight: 700; color: var(--accent-green); }
         .card p.stat-blue { font-size: 28px; font-weight: 700; color: var(--accent-blue); }
         .form-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        .form-input { background: #020617; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-size: 14px; outline: none; }
-        .form-input:focus { border-color: var(--accent-blue); }
+        .form-input, .form-select { background: #020617; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; font-size: 14px; outline: none; }
+        .form-input:focus, .form-select:focus { border-color: var(--accent-blue); }
         .action-btn { background: var(--accent-green); color: #020617; font-weight: 600; padding: 9px 12px; border: none; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; }
         .action-btn:hover { opacity: 0.9; }
         .table-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
@@ -61,7 +61,12 @@
             <h3>Quick Message Client</h3>
             <div class="form-group">
                 <input type="text" id="client-phone" class="form-input" placeholder="Client Phone (e.g. 2782...)">
+                <select id="msg-type" class="form-select" onchange="toggleMessageType()">
+                    <option value="text">Regular Reply (Within 24h Window)</option>
+                    <option value="template">Meta Template (Initiate / Out of Window)</option>
+                </select>
                 <input type="text" id="client-msg" class="form-input" placeholder="Message (e.g. Your Omoda C5 is ready)">
+                <input type="text" id="template-name" class="form-input" placeholder="Template Name" value="hello_world" style="display: none;">
                 <button id="send-btn" class="action-btn">Send WhatsApp</button>
             </div>
         </div>
@@ -89,17 +94,26 @@
     <script>
         const backendUrl = window.VITE_BACKEND_URL || "https://whatsapp-webhook-fp3x.onrender.com";
 
-        // Safe fetch for leads
+        function toggleMessageType() {
+            const type = document.getElementById('msg-type').value;
+            const msgInput = document.getElementById('client-msg');
+            const templateInput = document.getElementById('template-name');
+
+            if (type === 'template') {
+                msgInput.style.display = 'none';
+                templateInput.style.display = 'block';
+            } else {
+                msgInput.style.display = 'block';
+                templateInput.style.display = 'none';
+            }
+        }
+
+        // Fetch live leads on page load
         fetch(`${backendUrl}/api/leads`)
             .then(res => res.text())
             .then(text => {
                 let data;
-                try {
-                    data = JSON.parse(text);
-                } catch (e) {
-                    data = [];
-                }
-                
+                try { data = JSON.parse(text); } catch (e) { data = []; }
                 document.getElementById('lead-count').textContent = Array.isArray(data) ? data.length : 0;
                 const tbody = document.getElementById('leads-table-body');
                 if (Array.isArray(data) && data.length > 0) {
@@ -120,27 +134,36 @@
                 document.getElementById('leads-table-body').innerHTML = `<tr><td colspan="4" class="text-center" style="color: #f87171;">Failed to connect to backend endpoint.</td></tr>`;
             });
 
-        // Safe outbound message handler
+        // Handle sending outbound messages
         document.getElementById('send-btn').addEventListener('click', function() {
             const phone = document.getElementById('client-phone').value;
+            const msgType = document.getElementById('msg-type').value;
             const message = document.getElementById('client-msg').value;
-            
-            if (!phone || !message) {
-                alert('Please enter both a phone number and a message.');
+            const templateName = document.getElementById('template-name').value;
+
+            if (!phone) {
+                alert('Please enter a phone number.');
                 return;
             }
+
+            const payload = {
+                phone: phone,
+                useTemplate: msgType === 'template',
+                templateName: templateName,
+                message: message
+            };
 
             fetch(`${backendUrl}/api/send-message`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone, message })
+                body: JSON.stringify(payload)
             })
             .then(res => res.text())
             .then(text => {
                 try {
                     const data = JSON.parse(text);
                     if (data.success) {
-                        alert('WhatsApp message sent successfully!');
+                        alert(msgType === 'template' ? 'Template outbound message triggered!' : 'WhatsApp message sent successfully!');
                         document.getElementById('client-msg').value = '';
                     } else {
                         alert('Error: ' + JSON.stringify(data.error));
