@@ -62,7 +62,7 @@
             <div class="form-group">
                 <input type="text" id="client-phone" class="form-input" placeholder="Client Phone (e.g. 2782...)">
                 <input type="text" id="client-msg" class="form-input" placeholder="Message (e.g. Your Omoda C5 is ready)">
-                <button class="action-btn" onclick="window.sendWhatsAppMessage()">Send WhatsApp</button>
+                <button id="send-btn" class="action-btn">Send WhatsApp</button>
             </div>
         </div>
     </div>
@@ -114,10 +114,36 @@
                 document.getElementById('leads-table-body').innerHTML = `<tr><td colspan="4" class="text-center" style="color: #f87171;">Connected to backend, but failed to fetch lead records.</td></tr>`;
             });
 
-        // Fully bound global function for button onclick
-        window.sendWhatsAppMessage = function() {
+        // Event listener-based binding (bypasses inline onclick cache issues entirely)
+        document.getElementById('send-btn').addEventListener('click', function() {
             const phone = document.getElementById('client-phone').value;
             const message = document.getElementById('client-msg').value;
             
             if (!phone || !message) {
-                alert('Please enter both a phone number and a message
+                alert('Please enter both a phone number and a message.');
+                return;
+            }
+
+            fetch(`${backendUrl}/api/send-message`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, message })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('WhatsApp message sent successfully!');
+                    document.getElementById('client-msg').value = '';
+                } else {
+                    alert('Error sending message. Check console.');
+                    console.error(data.error);
+                }
+            })
+            .catch(err => {
+                console.error('Failed to send message:', err);
+                alert('Failed to connect to backend messaging endpoint.');
+            });
+        });
+    </script>
+</body>
+</html>
