@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potgieter Auto | Ava CRM</title>
+    <title>Potgieter Auto | Sales Control Center</title>
     <style>
         :root {
             --bg-dark: #0f172a; --sidebar-bg: #1e293b; --card-bg: #1e293b;
@@ -29,7 +29,7 @@
         .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
         .form-input, .form-select, .form-textarea { width: 100%; background: #020617; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 6px; margin-bottom: 15px; outline: none; font-size: 14px; }
         .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent-blue); }
-        .form-textarea { min-height: 150px; resize: vertical; }
+        .form-textarea { min-height: 120px; resize: vertical; }
         .btn { background: var(--accent-blue); color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
         .btn-green { background: var(--accent-green); color: #020617; }
         
@@ -63,7 +63,7 @@
         <button class="nav-btn active" onclick="switchPage('page-leads', this)">📊 CRM Leads</button>
         <button class="nav-btn" onclick="switchPage('page-chat', this)">💬 Live WhatsApp</button>
         <button class="nav-btn" onclick="switchPage('page-bot', this)">🤖 Ava Bot Flow</button>
-        <button class="nav-btn" onclick="switchPage('page-templates', this)">📄 Meta Templates</button>
+        <button class="nav-btn" onclick="switchPage('page-templates', this)">📡 Vehicle Broadcast</button>
         <button class="nav-btn" onclick="switchPage('page-sandbox', this)">🧪 Sandbox Testing</button>
     </div>
 
@@ -71,7 +71,7 @@
         
         <!-- PAGE 1: ACTIONABLE CRM -->
         <div id="page-leads" class="page active">
-            <h2>Lead Pipeline & CRM (App Engine)</h2>
+            <h2>Lead Pipeline & CRM</h2>
             <div class="filter-row">
                 <div class="filter-pill active" onclick="filterLeads('All', this)">All Leads</div>
                 <div class="filter-pill" onclick="filterLeads('Hot', this)">Hot Deals</div>
@@ -90,7 +90,7 @@
                         </tr>
                     </thead>
                     <tbody id="crm-table-body">
-                        <tr><td colspan="5" style="text-align:center;">Initializing Local App Database...</td></tr>
+                        <tr><td colspan="5" style="text-align:center;">Loading database...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -101,7 +101,7 @@
             <h2>Live Client Conversations</h2>
             <div class="chat-container">
                 <div class="chat-sidebar" id="chat-list">
-                    <div style="padding: 15px; color: var(--text-muted); text-align: center;">Loading memory engine...</div>
+                    <div style="padding: 15px; color: var(--text-muted); text-align: center;">Loading chats...</div>
                 </div>
                 <div class="chat-main">
                     <div class="chat-history" id="chat-history-container">
@@ -125,17 +125,33 @@
             </div>
         </div>
 
-        <!-- PAGE 4: META TEMPLATE ENGINE -->
+        <!-- PAGE 4: VEHICLE BROADCAST & MEDIA LAUNCHER -->
         <div id="page-templates" class="page">
-            <h2>WhatsApp Template Creator</h2>
+            <h2>WhatsApp Vehicle Broadcast & Media Launcher</h2>
             <div class="card">
-                <p style="color: var(--text-muted); margin-bottom: 15px;">Draft templates and submit them to the Meta Graph API for formal approval. (Requires WABA_ID in backend env variables).</p>
-                <input type="text" id="tmpl-name" class="form-input" placeholder="Template Name (e.g., promo_december_2026)">
-                <select id="tmpl-type" class="form-select">
-                    <option value="TEXT">Text Only</option>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">Instantly push curated vehicle stock, pricing, and high-res imagery directly to your WhatsApp leads.</p>
+                
+                <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 5px;">Select Curated Vehicle Stock</label>
+                <select id="stock-preset" class="form-select" onchange="loadStockPreset()">
+                    <option value="">-- Choose from Dealership Stock --</option>
+                    <option value="omoda">Omoda C5 HEV (New) - Est. R6,544/pm</option>
+                    <option value="jaecoo">Jaecoo J7 1.6TGDI (Demo) - Est. R7,200/pm</option>
+                    <option value="haval">Haval H6 2.0T 4WD (Used) - Est. R6,388/pm</option>
+                    <option value="polo">Polo Vivo 1.4 Manual (New) - Est. R3,739/pm</option>
                 </select>
-                <textarea id="tmpl-body" class="form-textarea" placeholder="Hello {{1}}, we have a special on the Omoda C5..."></textarea>
-                <button class="btn" onclick="submitTemplate()">Submit for Meta Approval</button>
+
+                <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 5px;">Target Recipient</label>
+                <select id="broadcast-target" class="form-select">
+                    <option value="ALL">📢 Broadcast to ALL Captured Leads</option>
+                </select>
+
+                <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 5px;">Vehicle Image URL (Optional photo attachment)</label>
+                <input type="text" id="broadcast-image" class="form-input" placeholder="https://images.unsplash.com/photo-...">
+
+                <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 5px;">Broadcast Message Content</label>
+                <textarea id="broadcast-msg" class="form-textarea" placeholder="Hello! Check out this incredible deal at Potgieter Auto..."></textarea>
+                
+                <button class="btn btn-green" onclick="sendBroadcast()">🚀 Send WhatsApp Broadcast</button>
             </div>
         </div>
 
@@ -167,9 +183,74 @@
             btnElement.classList.add('active');
             if (pageId === 'page-leads') loadLeads();
             if (pageId === 'page-chat') loadLiveChats();
+            if (pageId === 'page-templates') populateBroadcastDropdown();
         }
 
-        // --- 1. TWO-WAY CRM LOGIC ---
+        // --- PRESET STOCK CATALOGUE ---
+        const stockInventory = {
+            omoda: {
+                msg: "🔥 FEATURED DEAL: Omoda C5 HEV (Automatic Hybrid). Experience luxury and futuristic design. Est. R6,544 p/m. Reply 'INTERESTED' to book a test drive at Potgieter Auto today! 🚙✨",
+                img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80"
+            },
+            jaecoo: {
+                msg: "🚙 RUGGED PRE-OWNED: Jaecoo J7 1.6TGDI Adventure. Built for executive style and off-road capability. Est. R7,200 p/m. Reply to secure this unit before it's gone!",
+                img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80"
+            },
+            haval: {
+                msg: "⭐ PREMIUM SUV: Haval H6 2.0T 4WD Auto. Unmatched space, comfort, and safety features. Est. R6,388 p/m. Contact Potgieter Auto to arrange fast bank finance.",
+                img: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=80"
+            },
+            polo: {
+                msg: "🚗 CITY SPECIAL: Polo Vivo 1.4 Manual. Immaculate condition, fuel-efficient, and reliable. Est. R3,739 p/m. Reply now to lock in 100% finance pre-approval!",
+                img: "https://images.unsplash.com/photo-1541899481282-d53bffe3c351?auto=format&fit=crop&w=800&q=80"
+            }
+        };
+
+        function loadStockPreset() {
+            const key = document.getElementById('stock-preset').value;
+            if(!key || !stockInventory[key]) return;
+            document.getElementById('broadcast-msg').value = stockInventory[key].msg;
+            document.getElementById('broadcast-image').value = stockInventory[key].img;
+        }
+
+        function populateBroadcastDropdown() {
+            fetch(`${backendUrl}/api/leads`)
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById('broadcast-target');
+                    let html = '<option value="ALL">📢 Broadcast to ALL Captured Leads</option>';
+                    if(Array.isArray(data)) {
+                        html += data.map(l => `<option value="${l.phone}">${l.name} (${l.phone} - ${l.vehicle})</option>`).join('');
+                    }
+                    select.innerHTML = html;
+                }).catch(() => {});
+        }
+
+        function sendBroadcast() {
+            const phone = document.getElementById('broadcast-target').value;
+            const message = document.getElementById('broadcast-msg').value.trim();
+            const mediaUrl = document.getElementById('broadcast-image').value.trim();
+
+            if(!message) return alert("Please enter broadcast message content.");
+
+            fetch(`${backendUrl}/api/broadcast`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, message: message, mediaUrl: mediaUrl || null })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    alert(`WhatsApp broadcast successfully dispatched to ${data.sentCount} recipient(s)!`);
+                    document.getElementById('broadcast-msg').value = '';
+                    document.getElementById('broadcast-image').value = '';
+                } else {
+                    alert("Broadcast error: " + (data.error || "Unknown error"));
+                }
+            });
+        }
+
+        // --- CRM LOGIC ---
         function loadLeads() {
             fetch(`${backendUrl}/api/leads`)
                 .then(res => res.json())
@@ -186,4 +267,122 @@
                                 <td style="font-family: monospace; color: var(--accent-blue);">${lead.phone}</td>
                                 <td>${lead.vehicle}</td>
                                 <td>
-                                    <select class="tier-select" onchange="updateLeadTier('${lead.phone}', this.value)" style="
+                                    <select class="tier-select" onchange="updateLeadTier('${lead.phone}', this.value)" style="color: ${color}; border-color: ${color};">
+                                        <option value="Hot" ${tier === 'Hot' ? 'selected' : ''}>Hot Deal</option>
+                                        <option value="Warm" ${tier === 'Warm' ? 'selected' : ''}>Warm</option>
+                                        <option value="Cold" ${tier === 'Cold' ? 'selected' : ''}>No Deal</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        `}).join('');
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No leads in database yet.</td></tr>`;
+                    }
+                }).catch(() => {});
+        }
+
+        function updateLeadTier(phone, newTier) {
+            fetch(`${backendUrl}/api/update-lead`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, tier: newTier })
+            });
+        }
+
+        function filterLeads(tier, element) {
+            document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+            element.classList.add('active');
+            const rows = document.querySelectorAll('#crm-table-body tr');
+            rows.forEach(row => {
+                if(row.children.length === 1) return;
+                const selectElement = row.querySelector('.tier-select');
+                if(!selectElement) return;
+                if (tier === 'All' || selectElement.value === tier) row.style.display = '';
+                else row.style.display = 'none';
+            });
+        }
+
+        // --- LIVE CHAT ENGINE ---
+        function loadLiveChats() {
+            fetch(`${backendUrl}/api/contacts`)
+                .then(res => res.json())
+                .then(data => {
+                    chatData = data.conversations || {};
+                    renderChatSidebar();
+                    if (activeChatPhone && chatData[activeChatPhone]) renderChatHistory(activeChatPhone);
+                }).catch(() => {});
+        }
+
+        function renderChatSidebar() {
+            const sidebar = document.getElementById('chat-list');
+            const phones = Object.keys(chatData).sort((a, b) => new Date(chatData[b].lastUpdated) - new Date(chatData[a].lastUpdated));
+            if (phones.length === 0) return;
+            sidebar.innerHTML = phones.map(phone => {
+                const chat = chatData[phone];
+                const msgs = chat.messages || [];
+                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].content.substring(0, 30) + '...' : 'New contact';
+                const isActive = activeChatPhone === phone ? 'background: var(--hover-bg); border-left: 3px solid var(--accent-blue);' : '';
+                return `
+                <div class="chat-contact" style="${isActive}" onclick="selectChat('${phone}')">
+                    <strong>${chat.name} (${phone})</strong><br>
+                    <small style="color: var(--text-muted)">${lastMsg}</small>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function selectChat(phone) { activeChatPhone = phone; renderChatSidebar(); renderChatHistory(phone); }
+
+        function renderChatHistory(phone) {
+            const historyContainer = document.getElementById('chat-history-container');
+            const chat = chatData[phone];
+            if (!chat || !chat.messages || chat.messages.length === 0) return;
+            historyContainer.innerHTML = chat.messages.map(msg => {
+                const isUser = msg.role === 'user';
+                return `
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <small style="color: var(--text-muted); margin-bottom: 5px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${isUser ? chat.name : 'Potgieter Auto'}</small>
+                    <div class="chat-bubble ${isUser ? 'bubble-client' : 'bubble-bot'}">${msg.content.replace(/\n/g, '<br>')}</div>
+                </div>
+                `;
+            }).join('');
+            historyContainer.scrollTop = historyContainer.scrollHeight;
+        }
+
+        function sendLiveMessage() {
+            if (!activeChatPhone) return alert('Select a contact.');
+            const input = document.getElementById('live-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            input.value = '';
+            fetch(`${backendUrl}/api/send-message`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: activeChatPhone, message: message }) })
+            .then(() => loadLiveChats()); 
+        }
+
+        // --- SANDBOX LOGIC ---
+        function sendSandbox() {
+            const input = document.getElementById('sandbox-input');
+            const msg = input.value.trim();
+            if(!msg) return;
+            const chatBox = document.getElementById('sandbox-chat');
+            if(chatBox.innerHTML.includes('Test Ava here')) chatBox.innerHTML = '';
+            chatBox.innerHTML += `<div style="text-align: right; margin-bottom: 10px; color: var(--text-main);"><strong>You:</strong> ${msg}</div>`;
+            input.value = '';
+            fetch(`${backendUrl}/api/sandbox`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) })
+            .then(res => res.json()).then(data => {
+                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 10px; color: var(--accent-blue);"><strong>Ava:</strong> ${data.reply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        function updatePrompt() {
+            const newPrompt = document.getElementById('system-prompt-input').value;
+            fetch(`${backendUrl}/api/prompt`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: newPrompt }) })
+            .then(() => alert('Ava core instructions updated!'));
+        }
+
+        setInterval(() => { if (document.getElementById('page-chat').classList.contains('active')) loadLiveChats(); }, 2500);
+        setTimeout(() => { loadLeads(); loadLiveChats(); }, 1500);
+    </script>
+</body>
+</html>
+// --- END OF FILE ---
