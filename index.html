@@ -209,4 +209,128 @@
                             </tr>
                         `}).join('');
                     } else {
-                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No active leads in database.</td></tr>`;
+                    }
+                }).catch(() => {});
+        }
+
+        function updateLeadTier(phone, newTier) {
+            fetch(`${backendUrl}/api/update-lead`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, tier: newTier })
+            });
+        }
+
+        function filterLeads(tier, element) {
+            document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+            element.classList.add('active');
+            const rows = document.querySelectorAll('#crm-table-body tr');
+            rows.forEach(row => {
+                if(row.children.length === 1) return;
+                const selectElement = row.querySelector('.tier-select');
+                if(!selectElement) return;
+                if (tier === 'All' || selectElement.value === tier) row.style.display = '';
+                else row.style.display = 'none';
+            });
+        }
+
+        function loadLiveChats() {
+            fetch(`${backendUrl}/api/contacts`)
+                .then(res => res.json())
+                .then(data => {
+                    chatData = data.conversations || {};
+                    renderChatSidebar();
+                    if (activeChatPhone && chatData[activeChatPhone]) renderChatHistory(activeChatPhone);
+                }).catch(() => {});
+        }
+
+        function renderChatSidebar() {
+            const sidebar = document.getElementById('chat-list');
+            const phones = Object.keys(chatData).sort((a, b) => new Date(chatData[b].lastUpdated) - new Date(chatData[a].lastUpdated));
+            if (phones.length === 0) return;
+            sidebar.innerHTML = phones.map(phone => {
+                const chat = chatData[phone];
+                const msgs = chat.messages || [];
+                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].content.substring(0, 30) + '...' : 'New contact';
+                const isActive = activeChatPhone === phone ? 'background: var(--hover-bg); border-left: 3px solid #ffffff;' : '';
+                return `
+                <div class="chat-contact" style="${isActive}" onclick="selectChat('${phone}')">
+                    <strong>${chat.name} (${phone})</strong><br>
+                    <small style="color: var(--text-muted)">${lastMsg}</small>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function selectChat(phone) { activeChatPhone = phone; renderChatSidebar(); renderChatHistory(phone); }
+
+        function renderChatHistory(phone) {
+            const historyContainer = document.getElementById('chat-history-container');
+            const chat = chatData[phone];
+            if (!chat || !chat.messages || chat.messages.length === 0) return;
+            const atBottom = (historyContainer.scrollHeight - historyContainer.scrollTop) <= (historyContainer.clientHeight + 50);
+
+            historyContainer.innerHTML = chat.messages.map(msg => {
+                const isUser = msg.role === 'user';
+                return `
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <small style="color: var(--text-muted); margin-bottom: 4px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${isUser ? chat.name : 'Potgieter Auto'}</small>
+                    <div class="chat-bubble ${isUser ? 'bubble-client' : 'bubble-bot'}">${msg.content.replace(/\n/g, '<br>')}</div>
+                </div>
+                `;
+            }).join('');
+            if(atBottom) historyContainer.scrollTop = historyContainer.scrollHeight;
+        }
+
+        function sendLiveMessage() {
+            if (!activeChatPhone) return alert('Select a contact first.');
+            const input = document.getElementById('live-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            input.value = '';
+            if(!chatData[activeChatPhone].messages) chatData[activeChatPhone].messages = [];
+            chatData[activeChatPhone].messages.push({role: 'assistant', content: message});
+            renderChatHistory(activeChatPhone);
+            fetch(`${backendUrl}/api/send-message`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: activeChatPhone, message: message }) });
+        }
+
+        function submitTemplate() {
+            const name = document.getElementById('tmpl-name').value;
+            const body = document.getElementById('tmpl-body').value;
+            if(!name || !body) return alert("Fill all fields");
+            fetch(`${backendUrl}/api/create-template`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, body: body })
+            }).then(res => res.json()).then(data => {
+                if(data.error) alert("Meta API Error: " + data.error);
+                else alert("Template payload submitted to Meta successfully.");
+            });
+        }
+
+        function sendSandbox() {
+            const input = document.getElementById('sandbox-input');
+            const msg = input.value.trim();
+            if(!msg) return;
+            const chatBox = document.getElementById('sandbox-chat');
+            if(chatBox.innerHTML.includes('Test Ava here')) chatBox.innerHTML = '';
+            chatBox.innerHTML += `<div style="text-align: right; margin-bottom: 12px; color: var(--text-main);"><strong>You:</strong> ${msg}</div>`;
+            input.value = '';
+            fetch(`${backendUrl}/api/sandbox`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) })
+            .then(res => res.json()).then(data => {
+                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 12px; color: #a1a1aa;"><strong>Ava:</strong> ${data.reply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        function updatePrompt() {
+            const newPrompt = document.getElementById('system-prompt-input').value;
+            fetch(`${backendUrl}/api/prompt`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: newPrompt }) })
+            .then(() => alert('Ava core instructions updated!'));
+        }
+
+        setInterval(() => { if (document.getElementById('page-chat').classList.contains('active')) loadLiveChats(); }, 2500);
+        setTimeout(() => { loadLeads(); loadLiveChats(); }, 1500);
+    </script>
+</body>
+</html>
