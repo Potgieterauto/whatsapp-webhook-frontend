@@ -6,65 +6,70 @@
     <title>Potgieter Auto | Executive CRM</title>
     <style>
         :root {
-            --bg-lumina: #f8fafc;
-            --sidebar-lumina: #ffffff;
-            --card-lumina: #ffffff;
-            --border-lumina: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --accent-dark: #0f172a;
-            --accent-blue: #2563eb;
-            --hover-bg: #f1f5f9;
+            --bg-obsidian: #050505;
+            --card-obsidian: #0c0c0e;
+            --sidebar-obsidian: #09090b;
+            --border-obsidian: #222226;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent-glow: rgba(255, 255, 255, 0.15);
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --hover-bg: #18181b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-lumina); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        body { background-color: var(--bg-obsidian); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        .sidebar { width: 260px; background-color: var(--sidebar-lumina); border-right: 1px solid var(--border-lumina); display: flex; flex-direction: column; padding: 25px 0; }
-        .brand { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; padding: 0 25px 25px; border-bottom: 1px solid var(--border-lumina); margin-bottom: 20px; color: var(--accent-dark); display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
-        .nav-btn { background: none; border: none; color: var(--text-muted); padding: 14px 25px; text-align: left; font-size: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; width: 100%; font-weight: 600; }
-        .nav-btn:hover { background-color: var(--hover-bg); color: var(--accent-dark); }
-        .nav-btn.active { background-color: var(--accent-dark); color: #ffffff; border-left: 4px solid var(--accent-blue); }
+        .sidebar { width: 260px; background-color: var(--sidebar-obsidian); border-right: 1px solid var(--border-obsidian); display: flex; flex-direction: column; padding: 25px 0; }
+        .brand { font-size: 18px; font-weight: 700; letter-spacing: 1px; padding: 0 25px 25px; border-bottom: 1px solid var(--border-obsidian); margin-bottom: 20px; color: var(--text-main); display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .nav-btn { background: none; border: none; color: var(--text-muted); padding: 14px 25px; text-align: left; font-size: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; width: 100%; font-weight: 500; }
+        .nav-btn:hover { background-color: var(--hover-bg); color: var(--text-main); }
+        .nav-btn.active { background-color: var(--hover-bg); color: #ffffff; border-left: 3px solid #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.4); }
         
         .main-content { flex: 1; padding: 40px; overflow-y: auto; }
         .page { display: none; animation: fadeIn 0.25s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         
-        h2 { margin-bottom: 25px; font-size: 24px; font-weight: 700; color: var(--accent-dark); border-bottom: 1px solid var(--border-lumina); padding-bottom: 15px; }
+        h2 { margin-bottom: 25px; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; border-bottom: 1px solid var(--border-obsidian); padding-bottom: 15px; text-shadow: 0 0 20px var(--accent-glow); }
         
-        .card { background: var(--card-lumina); border: 1px solid var(--border-lumina); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .form-input, .form-select, .form-textarea { width: 100%; background: #f8fafc; border: 1px solid var(--border-lumina); color: var(--text-main); padding: 14px; border-radius: 8px; margin-bottom: 15px; outline: none; font-size: 14px; transition: 0.2s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent-blue); background: #ffffff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .form-textarea { min-height: 100px; resize: vertical; }
-        .btn { background: var(--accent-dark); color: #ffffff; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
-        .btn:hover { background: #1e293b; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2); }
-        .btn-green { background: #059669; color: #ffffff; }
+        .card { background: var(--card-obsidian); border: 1px solid var(--border-obsidian); border-radius: 14px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .form-input, .form-select, .form-textarea { width: 100%; background: #050505; border: 1px solid var(--border-obsidian); color: var(--text-main); padding: 14px; border-radius: 8px; margin-bottom: 10px; outline: none; font-size: 14px; transition: 0.2s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #52525b; box-shadow: 0 0 10px rgba(255,255,255,0.05); }
+        .form-textarea { min-height: 90px; resize: vertical; }
         
-        .tree-container { display: flex; flex-direction: column; gap: 20px; position: relative; }
-        .tree-node { background: #ffffff; border: 2px solid var(--border-lumina); border-radius: 12px; padding: 20px; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .node-badge { display: inline-block; background: var(--accent-blue); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .btn { background: #f4f4f5; color: #09090b; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn:hover { background: #ffffff; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        .btn-green { background: var(--accent-green); color: #050505; }
+        .btn-green:hover { background: #34d399; box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+
+        /* PHYSICAL DECISION TREE STYLING */
+        .tree-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; padding: 10px 0; }
+        .tree-node-box { width: 100%; max-width: 700px; background: #0c0c0e; border: 1px solid var(--border-obsidian); border-radius: 12px; padding: 20px; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .tree-branch-line { width: 3px; height: 35px; background: #3f3f46; position: relative; }
+        .node-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .node-title { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+        .node-badge { background: #27272a; color: #f4f4f5; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
 
         .filter-row { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
-        .filter-pill { background: #ffffff; border: 1px solid var(--border-lumina); color: var(--text-muted); padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
-        .filter-pill:hover, .filter-pill.active { background: var(--accent-dark); color: #ffffff; border-color: var(--accent-dark); }
+        .filter-pill { background: var(--card-obsidian); border: 1px solid var(--border-obsidian); color: var(--text-muted); padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s; }
+        .filter-pill:hover, .filter-pill.active { background: #18181b; color: #ffffff; border-color: #52525b; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
         
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-        th { color: var(--text-muted); padding: 16px 12px; border-bottom: 2px solid var(--border-lumina); font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-        td { padding: 16px 12px; border-bottom: 1px solid var(--border-lumina); color: var(--text-main); }
-        
-        .tier-select { background: #f8fafc; border: 1px solid var(--border-lumina); color: var(--text-main); padding: 6px 12px; border-radius: 6px; outline: none; cursor: pointer; font-weight: 600; font-size: 13px; }
+        th { color: var(--text-muted); padding: 16px 12px; border-bottom: 1px solid var(--border-obsidian); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--border-obsidian); }
+        .tier-select { background: #050505; border: 1px solid var(--border-obsidian); color: var(--text-main); padding: 6px 12px; border-radius: 6px; outline: none; cursor: pointer; font-weight: 600; font-size: 13px; }
 
-        .chat-container { display: flex; height: calc(100vh - 140px); border: 1px solid var(--border-lumina); border-radius: 12px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .chat-sidebar { width: 320px; border-right: 1px solid var(--border-lumina); background: #f8fafc; overflow-y: auto; }
-        .chat-contact { padding: 18px; border-bottom: 1px solid var(--border-lumina); cursor: pointer; transition: 0.2s; }
+        .chat-container { display: flex; height: calc(100vh - 140px); border: 1px solid var(--border-obsidian); border-radius: 14px; overflow: hidden; background: var(--card-obsidian); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .chat-sidebar { width: 320px; border-right: 1px solid var(--border-obsidian); background: var(--sidebar-obsidian); overflow-y: auto; }
+        .chat-contact { padding: 18px; border-bottom: 1px solid var(--border-obsidian); cursor: pointer; transition: 0.2s; }
         .chat-contact:hover { background: var(--hover-bg); }
-        .chat-main { flex: 1; display: flex; flex-direction: column; background: #ffffff; }
+        .chat-main { flex: 1; display: flex; flex-direction: column; background: #050505; }
         .chat-history { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
-        .chat-input-area { padding: 20px; background: #f8fafc; border-top: 1px solid var(--border-lumina); display: flex; gap: 12px; align-items: center; }
-        
-        .chat-bubble { padding: 12px 18px; border-radius: 10px; max-width: 65%; margin-bottom: 15px; font-size: 14px; line-height: 1.5; border: 1px solid var(--border-lumina); }
-        .bubble-client { background: #f1f5f9; color: var(--text-main); align-self: flex-start; }
-        .bubble-bot { background: var(--accent-dark); color: #ffffff; align-self: flex-end; border-color: var(--accent-dark); }
+        .chat-input-area { padding: 20px; background: var(--card-obsidian); border-top: 1px solid var(--border-obsidian); display: flex; gap: 12px; align-items: center; }
+        .chat-bubble { padding: 12px 18px; border-radius: 10px; max-width: 65%; margin-bottom: 15px; font-size: 14px; line-height: 1.5; border: 1px solid var(--border-obsidian); }
+        .bubble-client { background: var(--card-obsidian); color: var(--text-main); align-self: flex-start; }
+        .bubble-bot { background: #27272a; color: #ffffff; align-self: flex-end; border-color: #3f3f46; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
@@ -126,35 +131,59 @@
             </div>
         </div>
 
-        <!-- PAGE 3: DECISION TREE FLOW BUILDER -->
+        <!-- PAGE 3: PHYSICAL TREE BRANCH BUILDER -->
         <div id="page-bot" class="page">
             <h2>Ava Conversational Decision Tree</h2>
             <div class="card">
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Visually map and edit the exact path Ava takes. Saved permanently to your SQLite database.</p>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Visualizing how Ava's responses branch out sequentially. Edit any node below and save permanently to your SQLite database.</p>
                 
-                <div class="tree-container">
-                    <div class="tree-node">
-                        <span class="node-badge">Branch 1: Main Greeting</span>
+                <div class="tree-wrapper">
+                    <!-- NODE 1 -->
+                    <div class="tree-node-box">
+                        <div class="node-meta">
+                            <span class="node-title">🌱 Root Node: Initial Greeting</span>
+                            <span class="node-badge">Step 1</span>
+                        </div>
                         <textarea id="flow-greeting" class="form-textarea"></textarea>
                     </div>
 
-                    <div class="tree-node">
-                        <span class="node-badge">Branch 2: Condition Check (New / Demo)</span>
+                    <div class="tree-branch-line"></div>
+
+                    <!-- NODE 2 -->
+                    <div class="tree-node-box">
+                        <div class="node-meta">
+                            <span class="node-title">🌿 Branch Node: Vehicle Condition Check (New / Demo)</span>
+                            <span class="node-badge">Step 2</span>
+                        </div>
                         <textarea id="flow-branchNewUsed" class="form-textarea"></textarea>
                     </div>
 
-                    <div class="tree-node">
-                        <span class="node-badge">Branch 3: Budget & Finance Qualification</span>
+                    <div class="tree-branch-line"></div>
+
+                    <!-- NODE 3 -->
+                    <div class="tree-node-box">
+                        <div class="node-meta">
+                            <span class="node-title">🌿 Branch Node: Budget & Finance Qualification</span>
+                            <span class="node-badge">Step 3</span>
+                        </div>
                         <textarea id="flow-branchBudget" class="form-textarea"></textarea>
                     </div>
 
-                    <div class="tree-node">
-                        <span class="node-badge">Branch 4: Closing Handover Trigger</span>
+                    <div class="tree-branch-line"></div>
+
+                    <!-- NODE 4 -->
+                    <div class="tree-node-box">
+                        <div class="node-meta">
+                            <span class="node-title">🌳 Leaf Node: Closing Handover Trigger</span>
+                            <span class="node-badge">Step 4 (Final)</span>
+                        </div>
                         <textarea id="flow-closing" class="form-textarea"></textarea>
                     </div>
                 </div>
 
-                <button class="btn btn-green" style="margin-top: 25px;" onclick="saveFlowTree()">Save Decision Tree Permanently</button>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-green" onclick="saveFlowTree()">💾 Save Decision Tree Permanently</button>
+                </div>
             </div>
         </div>
 
@@ -176,7 +205,7 @@
         <div id="page-sandbox" class="page">
             <h2>Ava Test Sandbox</h2>
             <div class="card" style="height: 60vh; display: flex; flex-direction: column;">
-                <div id="sandbox-chat" style="flex: 1; background: #f8fafc; border-radius: 10px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-lumina); overflow-y: auto;">
+                <div id="sandbox-chat" style="flex: 1; background: #050505; border-radius: 10px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-obsidian); overflow-y: auto;">
                     <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Test Ava here securely against your decision tree branches.</p>
                 </div>
                 <div style="display: flex; gap: 12px;">
@@ -238,12 +267,12 @@
                     if (data && data.length > 0) {
                         tbody.innerHTML = data.map(lead => {
                             const tier = lead.tier || 'Warm';
-                            const color = tier === 'Hot' ? '#059669' : (tier === 'Cold' ? '#dc2626' : '#d97706');
+                            const color = tier === 'Hot' ? '#34d399' : (tier === 'Cold' ? '#f87171' : '#fbbf24');
                             return `
                             <tr>
                                 <td style="color: var(--text-muted);">${lead.timestamp || ''}</td>
                                 <td><strong>${lead.name}</strong></td>
-                                <td style="font-family: monospace; color: var(--text-muted);">${lead.phone}</td>
+                                <td style="font-family: monospace; color: #a1a1aa;">${lead.phone}</td>
                                 <td>${lead.vehicle}</td>
                                 <td>
                                     <select class="tier-select" onchange="updateLeadTier('${lead.phone}', this.value)" style="color: ${color};">
@@ -299,7 +328,7 @@
                 const chat = chatData[phone];
                 const msgs = chat.messages || [];
                 const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].content.substring(0, 30) + '...' : 'New contact';
-                const isActive = activeChatPhone === phone ? 'background: var(--hover-bg); border-left: 4px solid var(--accent-blue);' : '';
+                const isActive = activeChatPhone === phone ? 'background: var(--hover-bg); border-left: 3px solid #ffffff;' : '';
                 return `
                 <div class="chat-contact" style="${isActive}" onclick="selectChat('${phone}')">
                     <strong>${chat.name} (${phone})</strong><br>
@@ -364,7 +393,7 @@
             input.value = '';
             fetch(`${backendUrl}/api/sandbox`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) })
             .then(res => res.json()).then(data => {
-                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 12px; color: var(--text-muted);"><strong>Ava:</strong> ${data.reply}</div>`;
+                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 12px; color: #a1a1aa;"><strong>Ava:</strong> ${data.reply}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
