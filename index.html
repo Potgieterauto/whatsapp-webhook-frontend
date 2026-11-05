@@ -34,22 +34,14 @@
         h2 { margin-bottom: 25px; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; border-bottom: 1px solid var(--border-obsidian); padding-bottom: 15px; text-shadow: 0 0 20px var(--accent-glow); }
         
         .card { background: var(--card-obsidian); border: 1px solid var(--border-obsidian); border-radius: 14px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .form-input, .form-select, .form-textarea { width: 100%; background: #050505; border: 1px solid var(--border-obsidian); color: var(--text-main); padding: 14px; border-radius: 8px; margin-bottom: 10px; outline: none; font-size: 14px; transition: 0.2s; }
+        .form-input, .form-select, .form-textarea { width: 100%; background: #050505; border: 1px solid var(--border-obsidian); color: var(--text-main); padding: 14px; border-radius: 8px; margin-bottom: 15px; outline: none; font-size: 14px; transition: 0.2s; }
         .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #52525b; box-shadow: 0 0 10px rgba(255,255,255,0.05); }
-        .form-textarea { min-height: 90px; resize: vertical; }
+        .form-textarea { min-height: 120px; resize: vertical; }
         
         .btn { background: #f4f4f5; color: #09090b; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn:hover { background: #ffffff; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
         .btn-green { background: var(--accent-green); color: #050505; }
         .btn-green:hover { background: #34d399; box-shadow: 0 0 15px rgba(16,185,129,0.4); }
-
-        /* PHYSICAL DECISION TREE STYLING */
-        .tree-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; padding: 10px 0; }
-        .tree-node-box { width: 100%; max-width: 700px; background: #0c0c0e; border: 1px solid var(--border-obsidian); border-radius: 12px; padding: 20px; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
-        .tree-branch-line { width: 3px; height: 35px; background: #3f3f46; position: relative; }
-        .node-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .node-title { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
-        .node-badge { background: #27272a; color: #f4f4f5; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
 
         .filter-row { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
         .filter-pill { background: var(--card-obsidian); border: 1px solid var(--border-obsidian); color: var(--text-muted); padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s; }
@@ -66,10 +58,14 @@
         .chat-contact:hover { background: var(--hover-bg); }
         .chat-main { flex: 1; display: flex; flex-direction: column; background: #050505; }
         .chat-history { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
-        .chat-input-area { padding: 20px; background: var(--card-obsidian); border-top: 1px solid var(--border-obsidian); display: flex; gap: 12px; align-items: center; }
+        .chat-input-area { padding: 20px; background: var(--card-obsidian); border-top: 1px solid var(--border-obsidian); display: flex; flex-direction: column; gap: 10px; }
+        .chat-bottom-row { display: flex; gap: 10px; width: 100%; align-items: center; }
+        
         .chat-bubble { padding: 12px 18px; border-radius: 10px; max-width: 65%; margin-bottom: 15px; font-size: 14px; line-height: 1.5; border: 1px solid var(--border-obsidian); }
         .bubble-client { background: var(--card-obsidian); color: var(--text-main); align-self: flex-start; }
         .bubble-bot { background: #27272a; color: #ffffff; align-self: flex-end; border-color: #3f3f46; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+
+        .meta-preview-box { background: #18181b; border: 1px dashed #3f3f46; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -112,20 +108,32 @@
             </div>
         </div>
 
-        <!-- PAGE 2: LIVE CHAT -->
+        <!-- PAGE 2: LIVE CHAT WITH TEMPLATE SENDER -->
         <div id="page-chat" class="page">
-            <h2>Live Client Conversations</h2>
+            <h2>Live Client Conversations & 24-Hour Window Management</h2>
             <div class="chat-container">
                 <div class="chat-sidebar" id="chat-list">
                     <div style="padding: 20px; color: var(--text-muted); text-align: center;">Syncing database...</div>
                 </div>
                 <div class="chat-main">
                     <div class="chat-history" id="chat-history-container">
-                        <div style="text-align: center; color: var(--text-muted); margin-top: 60px;">Select a contact on the left to view history.</div>
+                        <div style="text-align: center; color: var(--text-muted); margin-top: 60px;">Select a contact on the left to view conversation history.</div>
                     </div>
                     <div class="chat-input-area">
-                        <input type="text" id="live-chat-input" class="form-input" style="margin-bottom: 0;" placeholder="Take over chat and type message...">
-                        <button class="btn btn-green" onclick="sendLiveMessage()">Send</button>
+                        <!-- META 24-HOUR RULE COMPLIANCE NOTICE & TEMPLATE SENDER -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 12px; color: var(--text-muted);">
+                            <span>⚠️ <strong>Meta 24-Hour Rule:</strong> Free text works inside active windows. Use templates outside 24 hours.</span>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <select id="active-template-select" class="form-select" style="margin-bottom: 0; padding: 6px; font-size: 12px; width: 180px;">
+                                    <option value="">Select Approved Template...</option>
+                                </select>
+                                <button class="btn" style="padding: 6px 12px; font-size: 12px;" onclick="sendTemplateToClient()">Send Template</button>
+                            </div>
+                        </div>
+                        <div class="chat-bottom-row">
+                            <input type="text" id="live-chat-input" class="form-input" style="margin-bottom: 0;" placeholder="Type free-form message (within 24h window)...">
+                            <button class="btn btn-green" onclick="sendLiveMessage()">Send</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,47 +145,25 @@
             <div class="card">
                 <p style="color: var(--text-muted); margin-bottom: 25px;">Visualizing how Ava's responses branch out sequentially. Edit any node below and save permanently to your SQLite database.</p>
                 
-                <div class="tree-wrapper">
-                    <!-- NODE 1 -->
-                    <div class="tree-node-box">
-                        <div class="node-meta">
-                            <span class="node-title">🌱 Root Node: Initial Greeting</span>
-                            <span class="node-badge">Step 1</span>
-                        </div>
-                        <textarea id="flow-greeting" class="form-textarea"></textarea>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                    <div style="width: 100%; max-width: 700px; background: #0c0c0e; border: 1px solid var(--border-obsidian); border-radius: 12px; padding: 20px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">🌱 Step 1: Initial Greeting</span>
+                        <textarea id="flow-greeting" class="form-textarea" style="margin-top: 8px;"></textarea>
                     </div>
-
-                    <div class="tree-branch-line"></div>
-
-                    <!-- NODE 2 -->
-                    <div class="tree-node-box">
-                        <div class="node-meta">
-                            <span class="node-title">🌿 Branch Node: Vehicle Condition Check (New / Demo)</span>
-                            <span class="node-badge">Step 2</span>
-                        </div>
-                        <textarea id="flow-branchNewUsed" class="form-textarea"></textarea>
+                    <div style="width: 3px; height: 25px; background: #3f3f46;"></div>
+                    <div style="width: 100%; max-width: 700px; background: #0c0c0e; border: 1px solid var(--border-obsidian); border-radius: 12px; padding: 20px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">🌿 Step 2: Condition Check (New / Demo)</span>
+                        <textarea id="flow-branchNewUsed" class="form-textarea" style="margin-top: 8px;"></textarea>
                     </div>
-
-                    <div class="tree-branch-line"></div>
-
-                    <!-- NODE 3 -->
-                    <div class="tree-node-box">
-                        <div class="node-meta">
-                            <span class="node-title">🌿 Branch Node: Budget & Finance Qualification</span>
-                            <span class="node-badge">Step 3</span>
-                        </div>
-                        <textarea id="flow-branchBudget" class="form-textarea"></textarea>
+                    <div style="width: 3px; height: 25px; background: #3f3f46;"></div>
+                    <div style="width: 100%; max-width: 700px; background: #0c0c0e; border: 1px solid var(--border-obsidian); border-radius: 12px; padding: 20px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">🌿 Step 3: Budget & Finance Qualification</span>
+                        <textarea id="flow-branchBudget" class="form-textarea" style="margin-top: 8px;"></textarea>
                     </div>
-
-                    <div class="tree-branch-line"></div>
-
-                    <!-- NODE 4 -->
-                    <div class="tree-node-box">
-                        <div class="node-meta">
-                            <span class="node-title">🌳 Leaf Node: Closing Handover Trigger</span>
-                            <span class="node-badge">Step 4 (Final)</span>
-                        </div>
-                        <textarea id="flow-closing" class="form-textarea"></textarea>
+                    <div style="width: 3px; height: 25px; background: #3f3f46;"></div>
+                    <div style="width: 100%; max-width: 700px; background: #0c0c0e; border: 1px solid var(--border-obsidian); border-radius: 12px; padding: 20px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">🌳 Step 4: Closing Handover Trigger</span>
+                        <textarea id="flow-closing" class="form-textarea" style="margin-top: 8px;"></textarea>
                     </div>
                 </div>
 
@@ -187,17 +173,51 @@
             </div>
         </div>
 
-        <!-- PAGE 4: TEMPLATES -->
+        <!-- PAGE 4: EXACT META MANAGER TEMPLATE CREATOR -->
         <div id="page-templates" class="page">
-            <h2>WhatsApp Template Creator</h2>
+            <h2>WhatsApp Template Manager (Meta Business Suite Style)</h2>
             <div class="card">
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Draft structured marketing templates for Meta Graph API review.</p>
-                <input type="text" id="tmpl-name" class="form-input" placeholder="Template Name (e.g., omoda_special_dec)">
-                <select id="tmpl-type" class="form-select">
-                    <option value="TEXT">Text Only</option>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Create and submit message templates matching Meta's exact specifications for high-volume outreach or re-engaging leads past the 24-hour window.</p>
+                
+                <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">TEMPLATE NAME</label>
+                <input type="text" id="meta-tmpl-name" class="form-input" placeholder="e.g. omoda_weekend_special (lowercase, underscores only)">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">CATEGORY</label>
+                        <select id="meta-tmpl-category" class="form-select">
+                            <option value="MARKETING">Marketing (Promotions, Offers)</option>
+                            <option value="UTILITY">Utility (Account updates, Confirmations)</option>
+                            <option value="AUTHENTICATION">Authentication (OTP codes)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">LANGUAGE</label>
+                        <select id="meta-tmpl-lang" class="form-select">
+                            <option value="en_US">English (US)</option>
+                            <option value="en_ZA">English (South Africa)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">HEADER TYPE (Optional)</label>
+                <select id="meta-tmpl-header-type" class="form-select">
+                    <option value="NONE">None</option>
+                    <option value="TEXT">Text</option>
+                    <option value="IMAGE">Image Media</option>
                 </select>
-                <textarea id="tmpl-body" class="form-textarea" placeholder="Hello {{1}}, explore our new showroom arrivals..."></textarea>
-                <button class="btn" onclick="submitTemplate()">Submit for Meta Approval</button>
+
+                <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">BODY CONTENT (Use {{1}}, {{2}} for dynamic customer parameters)</label>
+                <textarea id="meta-tmpl-body" class="form-textarea" placeholder="Hello {{1}}, we noticed you were looking at the {{2}}. Would you like to schedule a test drive this week?"></textarea>
+
+                <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">FOOTER (Optional)</label>
+                <input type="text" id="meta-tmpl-footer" class="form-input" placeholder="Potgieter Auto Hatfield">
+
+                <div class="meta-preview-box">
+                    <strong>ℹ️ Meta Submission Guidelines:</strong> Templates are reviewed by Meta automated systems. Avoid promotional spam keywords and ensure variables map to valid lead attributes.
+                </div>
+
+                <button class="btn btn-green" onclick="submitMetaTemplate()">Submit Template to Meta API</button>
             </div>
         </div>
 
@@ -221,6 +241,7 @@
         const backendUrl = window.VITE_BACKEND_URL || "https://whatsapp-webhook-fp3x.onrender.com";
         let chatData = {};
         let activeChatPhone = null;
+        let approvedTemplates = ["hello_world", "omoda_special_dec", "finance_followup"]; // Simulated store of templates
 
         function switchPage(pageId, btnElement) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -228,8 +249,14 @@
             document.getElementById(pageId).classList.add('active');
             btnElement.classList.add('active');
             if (pageId === 'page-leads') loadLeads();
-            if (pageId === 'page-chat') loadLiveChats();
+            if (pageId === 'page-chat') { loadLiveChats(); populateTemplateDropdown(); }
             if (pageId === 'page-bot') loadFlowTree();
+        }
+
+        function populateTemplateDropdown() {
+            const select = document.getElementById('active-template-select');
+            select.innerHTML = `<option value="">Select Approved Template...</option>` + 
+                approvedTemplates.map(t => `<option value="${t}">${t}</option>`).join('');
         }
 
         function loadFlowTree() {
@@ -370,16 +397,40 @@
             fetch(`${backendUrl}/api/send-message`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: activeChatPhone, message: message }) });
         }
 
-        function submitTemplate() {
-            const name = document.getElementById('tmpl-name').value;
-            const body = document.getElementById('tmpl-body').value;
-            if(!name || !body) return alert("Fill all fields");
+        function sendTemplateToClient() {
+            if (!activeChatPhone) return alert('Select a contact first.');
+            const tmplName = document.getElementById('active-template-select').value;
+            if (!tmplName) return alert('Select an approved template first.');
+            
+            const message = `[Meta Template Broadcast: ${tmplName}]`;
+            if(!chatData[activeChatPhone].messages) chatData[activeChatPhone].messages = [];
+            chatData[activeChatPhone].messages.push({role: 'assistant', content: message});
+            renderChatHistory(activeChatPhone);
+
+            fetch(`${backendUrl}/api/send-message`, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ phone: activeChatPhone, message: message, useTemplate: true, templateName: tmplName }) 
+            }).then(() => alert(`Template "${tmplName}" dispatched to ${activeChatPhone}`));
+        }
+
+        function submitMetaTemplate() {
+            const name = document.getElementById('meta-tmpl-name').value;
+            const category = document.getElementById('meta-tmpl-category').value;
+            const language = document.getElementById('meta-tmpl-lang').value;
+            const body = document.getElementById('meta-tmpl-body').value;
+            
+            if(!name || !body) return alert("Template Name and Body content are required.");
+            
             fetch(`${backendUrl}/api/create-template`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: name, body: body })
+                body: JSON.stringify({ name, category, language, body })
             }).then(res => res.json()).then(data => {
                 if(data.error) alert("Meta API Error: " + data.error);
-                else alert("Template payload submitted to Meta successfully.");
+                else {
+                    alert(`Template "${name}" submitted successfully to Meta Graph API for review.`);
+                    if(!approvedTemplates.includes(name)) approvedTemplates.push(name);
+                }
             });
         }
 
