@@ -347,7 +347,6 @@
         <div id="page-leads" class="page active">
             <div class="page-header">
                 <h2>Lead Pipeline & CRM Intelligence</h2>
-                <button class="btn" onclick="loadLeads()" style="font-size: 11px; padding: 6px 12px;">🔄 Refresh Leads</button>
             </div>
             <div class="filter-row">
                 <div class="filter-pill active" onclick="filterLeads('All', this)">All Leads</div>
@@ -643,7 +642,7 @@
                                     </select>
                                 </td>
                             </tr>
-                            `}).join('');
+                        `}).join('');
                     } else {
                         tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--dashboard-text-muted); padding: 40px;">No active leads found in database.</td></tr>`;
                     }
