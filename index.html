@@ -3,38 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potgieter Auto | Lumina Executive Dashboard</title>
+    <title>Potgieter Auto</title>
     <style>
         :root {
-            --lumina-bg: #050505;
-            --lumina-surface: #0c0c0e;
-            --lumina-surface-hover: #121216;
-            --lumina-border: #222227;
-            --lumina-border-focus: #3f3f46;
-            --lumina-text: #f4f4f5;
-            --lumina-text-muted: #a1a1aa;
-            --lumina-accent-glow: rgba(255, 255, 255, 0.08);
-            --lumina-green: #10b981;
-            --lumina-blue: #3b82f6;
-            --lumina-amber: #f59e0b;
-            --lumina-red: #ef4444;
+            --dashboard-bg: #050505;
+            --dashboard-surface: #0c0c0e;
+            --dashboard-surface-hover: #121216;
+            --dashboard-border: #222227;
+            --dashboard-border-focus: #3f3f46;
+            --dashboard-text: #f4f4f5;
+            --dashboard-text-muted: #a1a1aa;
+            --dashboard-accent-glow: rgba(255, 255, 255, 0.08);
+            --dashboard-green: #10b981;
+            --dashboard-blue: #3b82f6;
+            --dashboard-amber: #f59e0b;
+            --dashboard-red: #ef4444;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         
         body { 
-            background-color: var(--lumina-bg); 
-            color: var(--lumina-text); 
+            background-color: var(--dashboard-bg); 
+            color: var(--dashboard-text); 
             display: flex; 
             height: 100vh; 
             overflow: hidden; 
         }
         
-        /* LUMINA EXECUTIVE SIDEBAR */
         .sidebar { 
             width: 280px; 
-            background-color: var(--lumina-surface); 
-            border-right: 1px solid var(--lumina-border); 
+            background-color: var(--dashboard-surface); 
+            border-right: 1px solid var(--dashboard-border); 
             display: flex; 
             flex-direction: column; 
             padding: 24px 0; 
@@ -43,7 +42,7 @@
         
         .brand-container {
             padding: 0 24px 20px;
-            border-bottom: 1px solid var(--lumina-border);
+            border-bottom: 1px solid var(--dashboard-border);
             margin-bottom: 16px;
         }
 
@@ -51,7 +50,7 @@
             font-size: 15px; 
             font-weight: 700; 
             letter-spacing: 1.5px; 
-            color: var(--lumina-text); 
+            color: var(--dashboard-text); 
             display: flex; 
             align-items: center; 
             gap: 10px; 
@@ -60,7 +59,7 @@
 
         .brand-sub {
             font-size: 11px;
-            color: var(--lumina-text-muted);
+            color: var(--dashboard-text-muted);
             letter-spacing: 0.5px;
             margin-top: 4px;
             font-family: monospace;
@@ -71,7 +70,7 @@
         .nav-btn { 
             background: transparent; 
             border: none; 
-            color: var(--lumina-text-muted); 
+            color: var(--dashboard-text-muted); 
             padding: 12px 16px; 
             text-align: left; 
             font-size: 13px; 
@@ -86,22 +85,22 @@
         }
         
         .nav-btn:hover { 
-            background-color: var(--lumina-surface-hover); 
-            color: var(--lumina-text); 
+            background-color: var(--dashboard-surface-hover); 
+            color: var(--dashboard-text); 
         }
         
         .nav-btn.active { 
             background-color: #18181b; 
             color: #ffffff; 
             border-left: 3px solid #ffffff; 
-            box-shadow: 0 0 15px var(--lumina-accent-glow);
+            box-shadow: 0 0 15px var(--dashboard-accent-glow);
         }
 
         .sidebar-footer {
             padding: 16px 24px;
-            border-top: 1px solid var(--lumina-border);
+            border-top: 1px solid var(--dashboard-border);
             font-size: 11px;
-            color: var(--lumina-text-muted);
+            color: var(--dashboard-text-muted);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -110,17 +109,16 @@
         .status-dot {
             width: 8px;
             height: 8px;
-            background-color: var(--lumina-green);
+            background-color: var(--dashboard-green);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--lumina-green);
+            box-shadow: 0 0 8px var(--dashboard-green);
         }
         
-        /* MAIN CONTENT AREA */
         .main-content { 
             flex: 1; 
             padding: 40px; 
             overflow-y: auto; 
-            background: radial-gradient(circle at top right, #111116 0%, var(--lumina-bg) 60%);
+            background: radial-gradient(circle at top right, #111116 0%, var(--dashboard-bg) 60%);
         }
         
         .page { display: none; animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -132,7 +130,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            border-bottom: 1px solid var(--lumina-border);
+            border-bottom: 1px solid var(--dashboard-border);
             padding-bottom: 15px;
         }
 
@@ -140,12 +138,12 @@
             font-size: 22px; 
             font-weight: 600; 
             letter-spacing: -0.3px; 
-            color: var(--lumina-text); 
+            color: var(--dashboard-text); 
         }
         
         .card { 
-            background: var(--lumina-surface); 
-            border: 1px solid var(--lumina-border); 
+            background: var(--dashboard-surface); 
+            border: 1px solid var(--dashboard-border); 
             border-radius: 12px; 
             padding: 24px; 
             margin-bottom: 20px; 
@@ -156,7 +154,7 @@
             display: block;
             font-size: 11px;
             font-weight: 600;
-            color: var(--lumina-text-muted);
+            color: var(--dashboard-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
@@ -164,9 +162,9 @@
 
         .form-input, .form-select, .form-textarea { 
             width: 100%; 
-            background: var(--lumina-bg); 
-            border: 1px solid var(--lumina-border); 
-            color: var(--lumina-text); 
+            background: var(--dashboard-bg); 
+            border: 1px solid var(--dashboard-border); 
+            color: var(--dashboard-text); 
             padding: 12px 16px; 
             border-radius: 8px; 
             margin-bottom: 16px; 
@@ -176,7 +174,7 @@
         }
         
         .form-input:focus, .form-select:focus, .form-textarea:focus { 
-            border-color: var(--lumina-border-focus); 
+            border-color: var(--dashboard-border-focus); 
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05); 
         }
         
@@ -200,7 +198,7 @@
         }
         
         .btn-green { 
-            background: var(--lumina-green); 
+            background: var(--dashboard-green); 
             color: #050505; 
         }
         
@@ -209,13 +207,12 @@
             box-shadow: 0 0 15px rgba(16,185,129,0.3); 
         }
 
-        /* CRM FILTER PILLS */
         .filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
         
         .filter-pill { 
-            background: var(--lumina-surface); 
-            border: 1px solid var(--lumina-border); 
-            color: var(--lumina-text-muted); 
+            background: var(--dashboard-surface); 
+            border: 1px solid var(--dashboard-border); 
+            color: var(--dashboard-text-muted); 
             padding: 7px 16px; 
             border-radius: 20px; 
             cursor: pointer; 
@@ -227,17 +224,17 @@
         .filter-pill:hover, .filter-pill.active { 
             background: #18181b; 
             color: #ffffff; 
-            border-color: var(--lumina-border-focus); 
+            border-color: var(--dashboard-border-focus); 
         }
         
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-        th { color: var(--lumina-text-muted); padding: 14px 16px; border-bottom: 1px solid var(--lumina-border); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
-        td { padding: 16px; border-bottom: 1px solid var(--lumina-border); color: var(--lumina-text); }
+        th { color: var(--dashboard-text-muted); padding: 14px 16px; border-bottom: 1px solid var(--dashboard-border); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+        td { padding: 16px; border-bottom: 1px solid var(--dashboard-border); color: var(--dashboard-text); }
         
         .tier-select { 
-            background: var(--lumina-bg); 
-            border: 1px solid var(--lumina-border); 
-            color: var(--lumina-text); 
+            background: var(--dashboard-bg); 
+            border: 1px solid var(--dashboard-border); 
+            color: var(--dashboard-text); 
             padding: 6px 12px; 
             border-radius: 6px; 
             outline: none; 
@@ -246,35 +243,34 @@
             font-size: 12px; 
         }
 
-        /* LIVE CHAT INTERFACE */
         .chat-container { 
             display: flex; 
             height: calc(100vh - 160px); 
-            border: 1px solid var(--lumina-border); 
+            border: 1px solid var(--dashboard-border); 
             border-radius: 12px; 
             overflow: hidden; 
-            background: var(--lumina-surface); 
+            background: var(--dashboard-surface); 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
         }
         
-        .chat-sidebar { width: 320px; border-right: 1px solid var(--lumina-border); background: #09090b; overflow-y: auto; }
+        .chat-sidebar { width: 320px; border-right: 1px solid var(--dashboard-border); background: #09090b; overflow-y: auto; }
         
         .chat-contact { 
             padding: 16px 20px; 
-            border-bottom: 1px solid var(--lumina-border); 
+            border-bottom: 1px solid var(--dashboard-border); 
             cursor: pointer; 
             transition: 0.2s; 
         }
         
-        .chat-contact:hover { background: var(--lumina-surface-hover); }
+        .chat-contact:hover { background: var(--dashboard-surface-hover); }
         
-        .chat-main { flex: 1; display: flex; flex-direction: column; background: var(--lumina-bg); }
+        .chat-main { flex: 1; display: flex; flex-direction: column; background: var(--dashboard-bg); }
         .chat-history { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         
         .chat-input-area { 
             padding: 16px 24px; 
-            background: var(--lumina-surface); 
-            border-top: 1px solid var(--lumina-border); 
+            background: var(--dashboard-surface); 
+            border-top: 1px solid var(--dashboard-border); 
             display: flex; 
             flex-direction: column; 
             gap: 10px; 
@@ -302,25 +298,25 @@
             background: #18181b; 
             color: #ffffff; 
             align-self: flex-end; 
-            border: 1px solid var(--lumina-border-focus); 
+            border: 1px solid var(--dashboard-border-focus); 
             box-shadow: 0 0 15px rgba(255,255,255,0.03); 
         }
 
         .meta-preview-box { 
             background: #121216; 
-            border: 1px dashed var(--lumina-border-focus); 
+            border: 1px dashed var(--dashboard-border-focus); 
             padding: 14px 16px; 
             border-radius: 8px; 
             margin-bottom: 16px; 
             font-size: 12px; 
-            color: var(--lumina-text-muted); 
+            color: var(--dashboard-text-muted); 
             line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <!-- LUMINA SIDEBAR NAVIGATION -->
+    <!-- SIDEBAR NAVIGATION -->
     <div class="sidebar">
         <div>
             <div class="brand-container">
@@ -332,6 +328,7 @@
                 <button class="nav-btn" onclick="switchPage('page-chat', this)">💬 Live WhatsApp Inbox</button>
                 <button class="nav-btn" onclick="switchPage('page-bot', this)">🌿 Ava Decision Tree</button>
                 <button class="nav-btn" onclick="switchPage('page-templates', this)">📄 Meta Templates</button>
+                <button class="nav-btn" onclick="switchPage('page-rescue', this)">🚨 Lead Rescue Hub</button>
                 <button class="nav-btn" onclick="switchPage('page-sandbox', this)">🧪 Bot Test Sandbox</button>
             </div>
         </div>
@@ -366,7 +363,7 @@
                         </tr>
                     </thead>
                     <tbody id="crm-table-body">
-                        <tr><td colspan="5" style="text-align:center; color: var(--lumina-text-muted); padding: 40px;">Synchronizing secure database...</td></tr>
+                        <tr><td colspan="5" style="text-align:center; color: var(--dashboard-text-muted); padding: 40px;">Synchronizing secure database...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -379,14 +376,14 @@
             </div>
             <div class="chat-container">
                 <div class="chat-sidebar" id="chat-list">
-                    <div style="padding: 24px; color: var(--lumina-text-muted); text-align: center; font-size: 13px;">Syncing sessions...</div>
+                    <div style="padding: 24px; color: var(--dashboard-text-muted); text-align: center; font-size: 13px;">Syncing sessions...</div>
                 </div>
                 <div class="chat-main">
                     <div class="chat-history" id="chat-history-container">
-                        <div style="text-align: center; color: var(--lumina-text-muted); margin-top: 80px; font-size: 13px;">Select a contact on the left panel to inspect chat history.</div>
+                        <div style="text-align: center; color: var(--dashboard-text-muted); margin-top: 80px; font-size: 13px;">Select a contact on the left panel to inspect chat history.</div>
                     </div>
                     <div class="chat-input-area">
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 11px; color: var(--lumina-text-muted);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 11px; color: var(--dashboard-text-muted);">
                             <span>🟢 <strong>Executive Mode:</strong> Direct transmission to client WhatsApp.</span>
                             <div style="display: flex; gap: 8px; align-items: center;">
                                 <select id="active-template-select" class="form-select" style="margin-bottom: 0; padding: 6px 10px; font-size: 11px; width: 170px;">
@@ -410,25 +407,25 @@
                 <h2>Ava Conversational Decision Tree</h2>
             </div>
             <div class="card">
-                <p style="color: var(--lumina-text-muted); margin-bottom: 25px; font-size: 13px;">Configure Ava's step-by-step qualification path. Changes save permanently to your persistent database.</p>
+                <p style="color: var(--dashboard-text-muted); margin-bottom: 25px; font-size: 13px;">Configure Ava's step-by-step qualification path. Changes save permanently to your persistent database.</p>
                 
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
-                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--lumina-border); border-radius: 10px; padding: 20px;">
+                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--dashboard-border); border-radius: 10px; padding: 20px;">
                         <span class="form-label">🌱 Step 1: Initial Greeting & Hook</span>
                         <textarea id="flow-greeting" class="form-textarea" style="margin-bottom: 0;"></textarea>
                     </div>
-                    <div style="width: 2px; height: 20px; background: var(--lumina-border);"></div>
-                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--lumina-border); border-radius: 10px; padding: 20px;">
+                    <div style="width: 2px; height: 20px; background: var(--dashboard-border);"></div>
+                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--dashboard-border); border-radius: 10px; padding: 20px;">
                         <span class="form-label">🌿 Step 2: Condition Verification (New / Demo)</span>
                         <textarea id="flow-branchNewUsed" class="form-textarea" style="margin-bottom: 0;"></textarea>
                     </div>
-                    <div style="width: 2px; height: 20px; background: var(--lumina-border);"></div>
-                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--lumina-border); border-radius: 10px; padding: 20px;">
+                    <div style="width: 2px; height: 20px; background: var(--dashboard-border);"></div>
+                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--dashboard-border); border-radius: 10px; padding: 20px;">
                         <span class="form-label">🌿 Step 3: Budget & Finance Qualification</span>
                         <textarea id="flow-branchBudget" class="form-textarea" style="margin-bottom: 0;"></textarea>
                     </div>
-                    <div style="width: 2px; height: 20px; background: var(--lumina-border);"></div>
-                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--lumina-border); border-radius: 10px; padding: 20px;">
+                    <div style="width: 2px; height: 20px; background: var(--dashboard-border);"></div>
+                    <div style="width: 100%; max-width: 700px; background: #050505; border: 1px solid var(--dashboard-border); border-radius: 10px; padding: 20px;">
                         <span class="form-label">🌳 Step 4: Closing Handover Trigger</span>
                         <textarea id="flow-closing" class="form-textarea" style="margin-bottom: 0;"></textarea>
                     </div>
@@ -446,7 +443,7 @@
                 <h2>WhatsApp Template Manager</h2>
             </div>
             <div class="card" style="max-width: 800px;">
-                <p style="color: var(--lumina-text-muted); margin-bottom: 20px; font-size: 13px;">Draft outreach templates matching Meta Business Suite protocols for post-24-hour window re-engagement.</p>
+                <p style="color: var(--dashboard-text-muted); margin-bottom: 20px; font-size: 13px;">Draft outreach templates matching Meta Business Suite protocols for post-24-hour window re-engagement.</p>
                 
                 <label class="form-label">Template Name</label>
                 <input type="text" id="meta-tmpl-name" class="form-input" placeholder="e.g. omoda_weekend_special (lowercase, underscores only)">
@@ -490,14 +487,47 @@
             </div>
         </div>
 
+        <!-- PAGE 6: LEAD RESCUE & 24H WINDOW HUB -->
+        <div id="page-rescue" class="page">
+            <div class="page-header">
+                <h2>🚨 Lead Rescue & 24H Window Hub</h2>
+            </div>
+            <div class="card">
+                <p style="color: var(--dashboard-text-muted); margin-bottom: 20px; font-size: 13px;">
+                    Prevent human error and dead lead drop-offs. This hub identifies stale leads outside the active 24-hour customer care window and allows you to instantly deploy approved Meta templates to revive them.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div style="background: var(--dashboard-bg); border: 1px solid var(--dashboard-border); padding: 16px; border-radius: 8px;">
+                        <span class="form-label">Select Stale Lead / Target Phone</span>
+                        <select id="rescue-phone-select" class="form-select" style="margin-bottom: 0;">
+                            <option value="">Select Contact from Database...</option>
+                        </select>
+                    </div>
+                    <div style="background: var(--dashboard-bg); border: 1px solid var(--dashboard-border); padding: 16px; border-radius: 8px;">
+                        <span class="form-label">Select Approved Template to Bypass 24h Lock</span>
+                        <select id="rescue-template-select" class="form-select" style="margin-bottom: 0;">
+                            <option value="">Select Template...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="meta-preview-box">
+                    <strong>🛡️ Error Prevention Protocol:</strong> When free-form text fails because the client hasn't messaged in over 24 hours, use this rescue broadcast to securely open a new Meta session.
+                </div>
+
+                <button class="btn btn-green" onclick="executeLeadRescue()">🚀 Execute Instant Lead Rescue Broadcast</button>
+            </div>
+        </div>
+
         <!-- PAGE 5: SANDBOX -->
         <div id="page-sandbox" class="page">
             <div class="page-header">
                 <h2>Ava Bot Test Sandbox</h2>
             </div>
             <div class="card" style="height: calc(100vh - 200px); display: flex; flex-direction: column;">
-                <div id="sandbox-chat" style="flex: 1; background: var(--lumina-bg); border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--lumina-border); overflow-y: auto;">
-                    <p style="color: var(--lumina-text-muted); text-align: center; margin-top: 60px; font-size: 13px;">Test Ava's decision tree responses safely in real time.</p>
+                <div id="sandbox-chat" style="flex: 1; background: var(--dashboard-bg); border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--dashboard-border); overflow-y: auto;">
+                    <p style="color: var(--dashboard-text-muted); text-align: center; margin-top: 60px; font-size: 13px;">Test Ava's decision tree responses safely in real time.</p>
                 </div>
                 <div style="display: flex; gap: 12px;">
                     <input type="text" id="sandbox-input" class="form-input" style="margin-bottom: 0;" placeholder="Send test inquiry to Ava...">
@@ -522,12 +552,41 @@
             if (pageId === 'page-leads') loadLeads();
             if (pageId === 'page-chat') { loadLiveChats(); populateTemplateDropdown(); }
             if (pageId === 'page-bot') loadFlowTree();
+            if (pageId === 'page-rescue') loadRescueDropdowns();
         }
 
         function populateTemplateDropdown() {
             const select = document.getElementById('active-template-select');
             select.innerHTML = `<option value="">Select Approved Template...</option>` + 
                 approvedTemplates.map(t => `<option value="${t}">${t}</option>`).join('');
+        }
+
+        function loadRescueDropdowns() {
+            const tSelect = document.getElementById('rescue-template-select');
+            tSelect.innerHTML = `<option value="">Select Template...</option>` + 
+                approvedTemplates.map(t => `<option value="${t}">${t}</option>`).join('');
+
+            fetch(`${backendUrl}/api/contacts`)
+                .then(res => res.json())
+                .then(data => {
+                    const contacts = data.conversations || {};
+                    const pSelect = document.getElementById('rescue-phone-select');
+                    const phones = Object.keys(contacts);
+                    pSelect.innerHTML = `<option value="">Select Contact from Database...</option>` + 
+                        phones.map(p => `<option value="${p}">${contacts[p].name} (${p})</option>`).join('');
+                }).catch(() => {});
+        }
+
+        function executeLeadRescue() {
+            const phone = document.getElementById('rescue-phone-select').value;
+            const templateName = document.getElementById('rescue-template-select').value;
+            if(!phone || !templateName) return alert("Please select both a stale contact and an approved template.");
+
+            fetch(`${backendUrl}/api/send-message`, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ phone: phone, message: `[Lead Rescue Broadcast: ${templateName}]`, useTemplate: true, templateName: templateName }) 
+            }).then(() => alert(`Rescue template "${templateName}" successfully deployed to ${phone}! 24h window re-engaged.`));
         }
 
         function loadFlowTree() {
@@ -568,9 +627,9 @@
                             const color = tier === 'Hot' ? '#34d399' : (tier === 'Cold' ? '#f87171' : '#fbbf24');
                             return `
                             <tr>
-                                <td style="color: var(--lumina-text-muted); font-size: 12px;">${lead.timestamp || ''}</td>
+                                <td style="color: var(--dashboard-text-muted); font-size: 12px;">${lead.timestamp || ''}</td>
                                 <td><strong>${lead.name}</strong></td>
-                                <td style="font-family: monospace; color: var(--lumina-text-muted);">${lead.phone}</td>
+                                <td style="font-family: monospace; color: var(--dashboard-text-muted);">${lead.phone}</td>
                                 <td>${lead.vehicle}</td>
                                 <td>
                                     <select class="tier-select" onchange="updateLeadTier('${lead.phone}', this.value)" style="color: ${color};">
@@ -582,7 +641,7 @@
                             </tr>
                         `}).join('');
                     } else {
-                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--lumina-text-muted); padding: 40px;">No active leads found in database.</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--dashboard-text-muted); padding: 40px;">No active leads found in database.</td></tr>`;
                     }
                 }).catch(() => {});
         }
@@ -622,19 +681,19 @@
             const sidebar = document.getElementById('chat-list');
             const phones = Object.keys(chatData).sort((a, b) => new Date(chatData[b].lastUpdated) - new Date(chatData[a].lastUpdated));
             if (phones.length === 0) {
-                sidebar.innerHTML = `<div style="padding: 24px; color: var(--lumina-text-muted); text-align: center; font-size: 13px;">No active chats recorded.</div>`;
+                sidebar.innerHTML = `<div style="padding: 24px; color: var(--dashboard-text-muted); text-align: center; font-size: 13px;">No active chats recorded.</div>`;
                 return;
             }
             sidebar.innerHTML = phones.map(phone => {
                 const chat = chatData[phone];
                 const msgs = chat.messages || [];
                 const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].content.substring(0, 26) + '...' : 'New contact';
-                const isActive = activeChatPhone === phone ? 'background: var(--lumina-surface-hover); border-left: 3px solid #ffffff;' : '';
+                const isActive = activeChatPhone === phone ? 'background: var(--dashboard-surface-hover); border-left: 3px solid #ffffff;' : '';
                 return `
                 <div class="chat-contact" style="${isActive}" onclick="selectChat('${phone}')">
                     <strong style="font-size: 13px;">${chat.name}</strong><br>
-                    <small style="font-family: monospace; color: var(--lumina-text-muted); font-size: 11px;">${phone}</small><br>
-                    <small style="color: var(--lumina-text-muted); font-size: 12px;">${lastMsg}</small>
+                    <small style="font-family: monospace; color: var(--dashboard-text-muted); font-size: 11px;">${phone}</small><br>
+                    <small style="color: var(--dashboard-text-muted); font-size: 12px;">${lastMsg}</small>
                 </div>
                 `;
             }).join('');
@@ -646,7 +705,7 @@
             const historyContainer = document.getElementById('chat-history-container');
             const chat = chatData[phone];
             if (!chat || !chat.messages || chat.messages.length === 0) {
-                historyContainer.innerHTML = `<div style="text-align: center; color: var(--lumina-text-muted); margin-top: 80px; font-size: 13px;">No message logs found for this session.</div>`;
+                historyContainer.innerHTML = `<div style="text-align: center; color: var(--dashboard-text-muted); margin-top: 80px; font-size: 13px;">No message logs found for this session.</div>`;
                 return;
             }
             const atBottom = (historyContainer.scrollHeight - historyContainer.scrollTop) <= (historyContainer.clientHeight + 50);
@@ -656,7 +715,7 @@
                 const senderLabel = isUser ? chat.name : (msg.sender || 'Potgieter Auto (Human)');
                 return `
                 <div style="display: flex; flex-direction: column; width: 100%;">
-                    <small style="color: var(--lumina-text-muted); font-size: 11px; margin-bottom: 4px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${senderLabel}</small>
+                    <small style="color: var(--dashboard-text-muted); font-size: 11px; margin-bottom: 4px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${senderLabel}</small>
                     <div class="chat-bubble ${isUser ? 'bubble-client' : 'bubble-bot'}">${msg.content.replace(/\n/g, '<br>')}</div>
                 </div>
                 `;
@@ -719,11 +778,11 @@
             if(!msg) return;
             const chatBox = document.getElementById('sandbox-chat');
             if(chatBox.innerHTML.includes('Test Ava here')) chatBox.innerHTML = '';
-            chatBox.innerHTML += `<div style="text-align: right; margin-bottom: 12px; color: var(--lumina-text);"><strong>You:</strong> ${msg}</div>`;
+            chatBox.innerHTML += `<div style="text-align: right; margin-bottom: 12px; color: var(--dashboard-text);"><strong>You:</strong> ${msg}</div>`;
             input.value = '';
             fetch(`${backendUrl}/api/sandbox`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) })
             .then(res => res.json()).then(data => {
-                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 12px; color: var(--lumina-text-muted);"><strong>Ava:</strong> ${data.reply}</div>`;
+                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 12px; color: var(--dashboard-text-muted);"><strong>Ava:</strong> ${data.reply}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
