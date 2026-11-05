@@ -61,9 +61,10 @@
         .chat-input-area { padding: 20px; background: var(--card-obsidian); border-top: 1px solid var(--border-obsidian); display: flex; flex-direction: column; gap: 10px; }
         .chat-bottom-row { display: flex; gap: 10px; width: 100%; align-items: center; }
         
-        .chat-bubble { padding: 12px 18px; border-radius: 10px; max-width: 65%; margin-bottom: 15px; font-size: 14px; line-height: 1.5; border: 1px solid var(--border-obsidian); }
-        .bubble-client { background: var(--card-obsidian); color: var(--text-main); align-self: flex-start; }
-        .bubble-bot { background: #27272a; color: #ffffff; align-self: flex-end; border-color: #3f3f46; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+        /* HIGH CONTRAST BLACK & WHITE BUBBLES */
+        .chat-bubble { padding: 12px 18px; border-radius: 10px; max-width: 65%; margin-bottom: 15px; font-size: 14px; line-height: 1.5; }
+        .bubble-client { background: #ffffff; color: #050505; align-self: flex-start; border: 1px solid #e4e4e7; font-weight: 500; }
+        .bubble-bot { background: #050505; color: #ffffff; align-self: flex-end; border: 1px solid #3f3f46; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
 
         .meta-preview-box { background: #18181b; border: 1px dashed #3f3f46; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: var(--text-muted); }
     </style>
@@ -108,9 +109,9 @@
             </div>
         </div>
 
-        <!-- PAGE 2: LIVE CHAT WITH TEMPLATE SENDER -->
+        <!-- PAGE 2: LIVE CHAT WITH HUMAN TAKEOVER & TEMPLATE SENDER -->
         <div id="page-chat" class="page">
-            <h2>Live Client Conversations & 24-Hour Window Management</h2>
+            <h2>Live Client Conversations & Human Takeover</h2>
             <div class="chat-container">
                 <div class="chat-sidebar" id="chat-list">
                     <div style="padding: 20px; color: var(--text-muted); text-align: center;">Syncing database...</div>
@@ -120,9 +121,8 @@
                         <div style="text-align: center; color: var(--text-muted); margin-top: 60px;">Select a contact on the left to view conversation history.</div>
                     </div>
                     <div class="chat-input-area">
-                        <!-- META 24-HOUR RULE COMPLIANCE NOTICE & TEMPLATE SENDER -->
                         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 12px; color: var(--text-muted);">
-                            <span>⚠️ <strong>Meta 24-Hour Rule:</strong> Free text works inside active windows. Use templates outside 24 hours.</span>
+                            <span>🟢 <strong>Human Mode Active:</strong> Messages sent here go out as you directly to the client's WhatsApp.</span>
                             <div style="display: flex; gap: 8px; align-items: center;">
                                 <select id="active-template-select" class="form-select" style="margin-bottom: 0; padding: 6px; font-size: 12px; width: 180px;">
                                     <option value="">Select Approved Template...</option>
@@ -131,8 +131,8 @@
                             </div>
                         </div>
                         <div class="chat-bottom-row">
-                            <input type="text" id="live-chat-input" class="form-input" style="margin-bottom: 0;" placeholder="Type free-form message (within 24h window)...">
-                            <button class="btn btn-green" onclick="sendLiveMessage()">Send</button>
+                            <input type="text" id="live-chat-input" class="form-input" style="margin-bottom: 0;" placeholder="Type message to reply as yourself...">
+                            <button class="btn btn-green" onclick="sendLiveMessage()">Send as Human</button>
                         </div>
                     </div>
                 </div>
@@ -241,7 +241,7 @@
         const backendUrl = window.VITE_BACKEND_URL || "https://whatsapp-webhook-fp3x.onrender.com";
         let chatData = {};
         let activeChatPhone = null;
-        let approvedTemplates = ["hello_world", "omoda_special_dec", "finance_followup"]; // Simulated store of templates
+        let approvedTemplates = ["hello_world", "omoda_special_dec", "finance_followup"];
 
         function switchPage(pageId, btnElement) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -370,14 +370,18 @@
         function renderChatHistory(phone) {
             const historyContainer = document.getElementById('chat-history-container');
             const chat = chatData[phone];
-            if (!chat || !chat.messages || chat.messages.length === 0) return;
+            if (!chat || !chat.messages || chat.messages.length === 0) {
+                historyContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); margin-top: 60px;">No messages recorded yet for this contact.</div>`;
+                return;
+            }
             const atBottom = (historyContainer.scrollHeight - historyContainer.scrollTop) <= (historyContainer.clientHeight + 50);
 
             historyContainer.innerHTML = chat.messages.map(msg => {
                 const isUser = msg.role === 'user';
+                const senderLabel = isUser ? chat.name : (msg.sender || 'Potgieter Auto (Human)');
                 return `
                 <div style="display: flex; flex-direction: column; width: 100%;">
-                    <small style="color: var(--text-muted); margin-bottom: 4px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${isUser ? chat.name : 'Potgieter Auto'}</small>
+                    <small style="color: var(--text-muted); margin-bottom: 4px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${senderLabel}</small>
                     <div class="chat-bubble ${isUser ? 'bubble-client' : 'bubble-bot'}">${msg.content.replace(/\n/g, '<br>')}</div>
                 </div>
                 `;
@@ -392,7 +396,7 @@
             if (!message) return;
             input.value = '';
             if(!chatData[activeChatPhone].messages) chatData[activeChatPhone].messages = [];
-            chatData[activeChatPhone].messages.push({role: 'assistant', content: message});
+            chatData[activeChatPhone].messages.push({role: 'assistant', sender: 'Potgieter Auto (Human)', content: message});
             renderChatHistory(activeChatPhone);
             fetch(`${backendUrl}/api/send-message`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: activeChatPhone, message: message }) });
         }
@@ -404,7 +408,7 @@
             
             const message = `[Meta Template Broadcast: ${tmplName}]`;
             if(!chatData[activeChatPhone].messages) chatData[activeChatPhone].messages = [];
-            chatData[activeChatPhone].messages.push({role: 'assistant', content: message});
+            chatData[activeChatPhone].messages.push({role: 'assistant', sender: 'Potgieter Auto (Human)', content: message});
             renderChatHistory(activeChatPhone);
 
             fetch(`${backendUrl}/api/send-message`, { 
