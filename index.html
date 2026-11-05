@@ -19,14 +19,12 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-lumina); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        /* Sidebar Styles (Clean White Showroom Look) */
         .sidebar { width: 260px; background-color: var(--sidebar-lumina); border-right: 1px solid var(--border-lumina); display: flex; flex-direction: column; padding: 25px 0; }
         .brand { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; padding: 0 25px 25px; border-bottom: 1px solid var(--border-lumina); margin-bottom: 20px; color: var(--accent-dark); display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
         .nav-btn { background: none; border: none; color: var(--text-muted); padding: 14px 25px; text-align: left; font-size: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; width: 100%; font-weight: 600; }
         .nav-btn:hover { background-color: var(--hover-bg); color: var(--accent-dark); }
         .nav-btn.active { background-color: var(--accent-dark); color: #ffffff; border-left: 4px solid var(--accent-blue); }
         
-        /* Main Content Layout */
         .main-content { flex: 1; padding: 40px; overflow-y: auto; }
         .page { display: none; animation: fadeIn 0.25s ease; }
         .page.active { display: block; }
@@ -34,17 +32,18 @@
         
         h2 { margin-bottom: 25px; font-size: 24px; font-weight: 700; color: var(--accent-dark); border-bottom: 1px solid var(--border-lumina); padding-bottom: 15px; }
         
-        /* Showroom UI Cards & Inputs */
         .card { background: var(--card-lumina); border: 1px solid var(--border-lumina); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .form-input, .form-select, .form-textarea { width: 100%; background: #f8fafc; border: 1px solid var(--border-lumina); color: var(--text-main); padding: 14px; border-radius: 8px; margin-bottom: 15px; outline: none; font-size: 14px; transition: 0.2s; }
         .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent-blue); background: #ffffff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .form-textarea { min-height: 160px; resize: vertical; }
+        .form-textarea { min-height: 100px; resize: vertical; }
         .btn { background: var(--accent-dark); color: #ffffff; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn:hover { background: #1e293b; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2); }
         .btn-green { background: #059669; color: #ffffff; }
-        .btn-green:hover { background: #047857; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2); }
         
-        /* Filters & CRM Tables */
+        .tree-container { display: flex; flex-direction: column; gap: 20px; position: relative; }
+        .tree-node { background: #ffffff; border: 2px solid var(--border-lumina); border-radius: 12px; padding: 20px; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .node-badge { display: inline-block; background: var(--accent-blue); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+
         .filter-row { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
         .filter-pill { background: #ffffff; border: 1px solid var(--border-lumina); color: var(--text-muted); padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
         .filter-pill:hover, .filter-pill.active { background: var(--accent-dark); color: #ffffff; border-color: var(--accent-dark); }
@@ -54,9 +53,7 @@
         td { padding: 16px 12px; border-bottom: 1px solid var(--border-lumina); color: var(--text-main); }
         
         .tier-select { background: #f8fafc; border: 1px solid var(--border-lumina); color: var(--text-main); padding: 6px 12px; border-radius: 6px; outline: none; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .tier-select:focus { border-color: var(--accent-blue); }
 
-        /* WhatsApp Chat UI */
         .chat-container { display: flex; height: calc(100vh - 140px); border: 1px solid var(--border-lumina); border-radius: 12px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .chat-sidebar { width: 320px; border-right: 1px solid var(--border-lumina); background: #f8fafc; overflow-y: auto; }
         .chat-contact { padding: 18px; border-bottom: 1px solid var(--border-lumina); cursor: pointer; transition: 0.2s; }
@@ -76,7 +73,7 @@
         <div class="brand">⚡ Potgieter Auto</div>
         <button class="nav-btn active" onclick="switchPage('page-leads', this)">📊 CRM Leads</button>
         <button class="nav-btn" onclick="switchPage('page-chat', this)">💬 Live WhatsApp</button>
-        <button class="nav-btn" onclick="switchPage('page-bot', this)">🤖 Ava Bot Flow</button>
+        <button class="nav-btn" onclick="switchPage('page-bot', this)">🌿 Ava Decision Tree</button>
         <button class="nav-btn" onclick="switchPage('page-templates', this)">📄 Meta Templates</button>
         <button class="nav-btn" onclick="switchPage('page-sandbox', this)">🧪 Sandbox Testing</button>
     </div>
@@ -115,7 +112,7 @@
             <h2>Live Client Conversations</h2>
             <div class="chat-container">
                 <div class="chat-sidebar" id="chat-list">
-                    <div style="padding: 20px; color: var(--text-muted); text-align: center;">Syncing memory engine...</div>
+                    <div style="padding: 20px; color: var(--text-muted); text-align: center;">Syncing database...</div>
                 </div>
                 <div class="chat-main">
                     <div class="chat-history" id="chat-history-container">
@@ -129,13 +126,35 @@
             </div>
         </div>
 
-        <!-- PAGE 3: BOT FLOW -->
+        <!-- PAGE 3: DECISION TREE FLOW BUILDER -->
         <div id="page-bot" class="page">
-            <h2>Ava AI Behavior Engine</h2>
+            <h2>Ava Conversational Decision Tree</h2>
             <div class="card">
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Configure Ava's core sales persona and guidelines in real-time.</p>
-                <textarea id="system-prompt-input" class="form-textarea">Loading current prompt...</textarea>
-                <button class="btn" onclick="updatePrompt()">Save AI Logic</button>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Visually map and edit the exact path Ava takes. Saved permanently to your SQLite database.</p>
+                
+                <div class="tree-container">
+                    <div class="tree-node">
+                        <span class="node-badge">Branch 1: Main Greeting</span>
+                        <textarea id="flow-greeting" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="tree-node">
+                        <span class="node-badge">Branch 2: Condition Check (New / Demo)</span>
+                        <textarea id="flow-branchNewUsed" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="tree-node">
+                        <span class="node-badge">Branch 3: Budget & Finance Qualification</span>
+                        <textarea id="flow-branchBudget" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="tree-node">
+                        <span class="node-badge">Branch 4: Closing Handover Trigger</span>
+                        <textarea id="flow-closing" class="form-textarea"></textarea>
+                    </div>
+                </div>
+
+                <button class="btn btn-green" style="margin-top: 25px;" onclick="saveFlowTree()">Save Decision Tree Permanently</button>
             </div>
         </div>
 
@@ -158,7 +177,7 @@
             <h2>Ava Test Sandbox</h2>
             <div class="card" style="height: 60vh; display: flex; flex-direction: column;">
                 <div id="sandbox-chat" style="flex: 1; background: #f8fafc; border-radius: 10px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-lumina); overflow-y: auto;">
-                    <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Test Ava here securely without hitting live client numbers.</p>
+                    <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Test Ava here securely against your decision tree branches.</p>
                 </div>
                 <div style="display: flex; gap: 12px;">
                     <input type="text" id="sandbox-input" class="form-input" style="margin-bottom: 0;" placeholder="Send test message to Ava...">
@@ -170,4 +189,188 @@
     </div>
 
     <script>
-        const backendUrl = window.VITE_BACKEND_URL || "
+        const backendUrl = window.VITE_BACKEND_URL || "https://whatsapp-webhook-fp3x.onrender.com";
+        let chatData = {};
+        let activeChatPhone = null;
+
+        function switchPage(pageId, btnElement) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            btnElement.classList.add('active');
+            if (pageId === 'page-leads') loadLeads();
+            if (pageId === 'page-chat') loadLiveChats();
+            if (pageId === 'page-bot') loadFlowTree();
+        }
+
+        function loadFlowTree() {
+            fetch(`${backendUrl}/api/flow`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('flow-greeting').value = data.greeting || '';
+                    document.getElementById('flow-branchNewUsed').value = data.branchNewUsed || '';
+                    document.getElementById('flow-branchBudget').value = data.branchBudget || '';
+                    document.getElementById('flow-closing').value = data.closing || '';
+                }).catch(() => {});
+        }
+
+        function saveFlowTree() {
+            const payload = {
+                greeting: document.getElementById('flow-greeting').value,
+                branchNewUsed: document.getElementById('flow-branchNewUsed').value,
+                branchBudget: document.getElementById('flow-branchBudget').value,
+                closing: document.getElementById('flow-closing').value
+            };
+            fetch(`${backendUrl}/api/flow`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(res => res.json()).then(data => {
+                if(data.success) alert("Decision tree branches saved permanently to SQLite database!");
+            });
+        }
+
+        function loadLeads() {
+            fetch(`${backendUrl}/api/leads`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('crm-table-body');
+                    if (data && data.length > 0) {
+                        tbody.innerHTML = data.map(lead => {
+                            const tier = lead.tier || 'Warm';
+                            const color = tier === 'Hot' ? '#059669' : (tier === 'Cold' ? '#dc2626' : '#d97706');
+                            return `
+                            <tr>
+                                <td style="color: var(--text-muted);">${lead.timestamp || ''}</td>
+                                <td><strong>${lead.name}</strong></td>
+                                <td style="font-family: monospace; color: var(--text-muted);">${lead.phone}</td>
+                                <td>${lead.vehicle}</td>
+                                <td>
+                                    <select class="tier-select" onchange="updateLeadTier('${lead.phone}', this.value)" style="color: ${color};">
+                                        <option value="Hot" ${tier === 'Hot' ? 'selected' : ''}>Hot Deal</option>
+                                        <option value="Warm" ${tier === 'Warm' ? 'selected' : ''}>Warm</option>
+                                        <option value="Cold" ${tier === 'Cold' ? 'selected' : ''}>No Deal</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        `}).join('');
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No active leads in database.</td></tr>`;
+                    }
+                }).catch(() => {});
+        }
+
+        function updateLeadTier(phone, newTier) {
+            fetch(`${backendUrl}/api/update-lead`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: phone, tier: newTier })
+            });
+        }
+
+        function filterLeads(tier, element) {
+            document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+            element.classList.add('active');
+            const rows = document.querySelectorAll('#crm-table-body tr');
+            rows.forEach(row => {
+                if(row.children.length === 1) return;
+                const selectElement = row.querySelector('.tier-select');
+                if(!selectElement) return;
+                if (tier === 'All' || selectElement.value === tier) row.style.display = '';
+                else row.style.display = 'none';
+            });
+        }
+
+        function loadLiveChats() {
+            fetch(`${backendUrl}/api/contacts`)
+                .then(res => res.json())
+                .then(data => {
+                    chatData = data.conversations || {};
+                    renderChatSidebar();
+                    if (activeChatPhone && chatData[activeChatPhone]) renderChatHistory(activeChatPhone);
+                }).catch(() => {});
+        }
+
+        function renderChatSidebar() {
+            const sidebar = document.getElementById('chat-list');
+            const phones = Object.keys(chatData).sort((a, b) => new Date(chatData[b].lastUpdated) - new Date(chatData[a].lastUpdated));
+            if (phones.length === 0) return;
+            sidebar.innerHTML = phones.map(phone => {
+                const chat = chatData[phone];
+                const msgs = chat.messages || [];
+                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].content.substring(0, 30) + '...' : 'New contact';
+                const isActive = activeChatPhone === phone ? 'background: var(--hover-bg); border-left: 4px solid var(--accent-blue);' : '';
+                return `
+                <div class="chat-contact" style="${isActive}" onclick="selectChat('${phone}')">
+                    <strong>${chat.name} (${phone})</strong><br>
+                    <small style="color: var(--text-muted)">${lastMsg}</small>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function selectChat(phone) { activeChatPhone = phone; renderChatSidebar(); renderChatHistory(phone); }
+
+        function renderChatHistory(phone) {
+            const historyContainer = document.getElementById('chat-history-container');
+            const chat = chatData[phone];
+            if (!chat || !chat.messages || chat.messages.length === 0) return;
+            const atBottom = (historyContainer.scrollHeight - historyContainer.scrollTop) <= (historyContainer.clientHeight + 50);
+
+            historyContainer.innerHTML = chat.messages.map(msg => {
+                const isUser = msg.role === 'user';
+                return `
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <small style="color: var(--text-muted); margin-bottom: 4px; ${isUser ? 'align-self: flex-start;' : 'align-self: flex-end;'}">${isUser ? chat.name : 'Potgieter Auto'}</small>
+                    <div class="chat-bubble ${isUser ? 'bubble-client' : 'bubble-bot'}">${msg.content.replace(/\n/g, '<br>')}</div>
+                </div>
+                `;
+            }).join('');
+            if(atBottom) historyContainer.scrollTop = historyContainer.scrollHeight;
+        }
+
+        function sendLiveMessage() {
+            if (!activeChatPhone) return alert('Select a contact first.');
+            const input = document.getElementById('live-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            input.value = '';
+            if(!chatData[activeChatPhone].messages) chatData[activeChatPhone].messages = [];
+            chatData[activeChatPhone].messages.push({role: 'assistant', content: message});
+            renderChatHistory(activeChatPhone);
+            fetch(`${backendUrl}/api/send-message`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: activeChatPhone, message: message }) });
+        }
+
+        function submitTemplate() {
+            const name = document.getElementById('tmpl-name').value;
+            const body = document.getElementById('tmpl-body').value;
+            if(!name || !body) return alert("Fill all fields");
+            fetch(`${backendUrl}/api/create-template`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, body: body })
+            }).then(res => res.json()).then(data => {
+                if(data.error) alert("Meta API Error: " + data.error);
+                else alert("Template payload submitted to Meta successfully.");
+            });
+        }
+
+        function sendSandbox() {
+            const input = document.getElementById('sandbox-input');
+            const msg = input.value.trim();
+            if(!msg) return;
+            const chatBox = document.getElementById('sandbox-chat');
+            if(chatBox.innerHTML.includes('Test Ava here')) chatBox.innerHTML = '';
+            chatBox.innerHTML += `<div style="text-align: right; margin-bottom: 12px; color: var(--text-main);"><strong>You:</strong> ${msg}</div>`;
+            input.value = '';
+            fetch(`${backendUrl}/api/sandbox`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) })
+            .then(res => res.json()).then(data => {
+                chatBox.innerHTML += `<div style="text-align: left; margin-bottom: 12px; color: var(--text-muted);"><strong>Ava:</strong> ${data.reply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        setInterval(() => { if (document.getElementById('page-chat').classList.contains('active')) loadLiveChats(); }, 2500);
+        setTimeout(() => { loadLeads(); loadLiveChats(); loadFlowTree(); }, 1500);
+    </script>
+</body>
+</html>
